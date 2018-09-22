@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
-import { ObservationPage } from './observation';
+import { NewObservationPage } from './new-observation';
 
 @NgModule({
   declarations: [
-    ObservationPage,
+    NewObservationPage,
   ],
   imports: [
-    IonicPageModule.forChild(ObservationPage),
+    IonicPageModule.forChild(NewObservationPage),
   ],
 })
 export class ObservationPageModule {}

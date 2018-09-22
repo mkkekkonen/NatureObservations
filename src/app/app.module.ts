@@ -10,14 +10,14 @@ import { MainMenuButtonComponent } from '../components/main-menu-button/main-me
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import { ObservationPage } from '../pages/observation/observation';
+import { NewObservationPage } from '../pages/new-observation/new-observation';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     ListPage,
-    ObservationPage,
+    NewObservationPage,
     MainMenuButtonComponent,
   ],
   imports: [
@@ -29,7 +29,7 @@ import { ObservationPage } from '../pages/observation/observation';
     MyApp,
     HomePage,
     ListPage,
-    ObservationPage,
+    NewObservationPage,
   ],
   providers: [
     StatusBar,

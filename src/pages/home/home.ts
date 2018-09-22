@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
 import { MainMenuButtonComponent } from '../../components/main-menu-button/main-menu-button';
-import { ObservationPage } from '../observation/observation';
+import { NewObservationPage } from '../new-observation/new-observation';
 
 @Component({
   selector: 'page-home',
@@ -10,7 +10,7 @@ import { ObservationPage } from '../observation/observation';
 })
 export class HomePage {
 
-  observationPage = ObservationPage;
+  newObservationPage = NewObservationPage;
 
   constructor(public navCtrl: NavController) {
 

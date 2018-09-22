@@ -11,9 +11,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 @IonicPage()
 @Component({
   selector: 'page-observation',
-  templateUrl: 'observation.html',
+  templateUrl: 'new-observation.html',
 })
-export class ObservationPage {
+export class NewObservationPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
   }
