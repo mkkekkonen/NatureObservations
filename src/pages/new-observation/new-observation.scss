@@ -28,6 +28,12 @@ page-observation {
         }
     }
 
+    .img-button-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+    }
+
     .italic {
         font-style: italic;
     }

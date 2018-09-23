@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { DomSanitizer } from '@angular/platform-browser';
+import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
+import { Camera, CameraOptions } from '@ionic-native/camera';
+import { FilePath } from '@ionic-native/file-path';
 
 /**
  * Generated class for the ObservationPage page.
@@ -15,11 +18,56 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class NewObservationPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  DEBUG: boolean = true;
+
+  imageUrl: string = null;
+
+  cameraOptions: CameraOptions = null;
+  photoLibraryOptions: CameraOptions = null;
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private camera: Camera, public platform: Platform,
+              private filePath: FilePath, private sanitizer: DomSanitizer) {
+    this.cameraOptions = {
+      quality: 100,
+      destinationType: this.DEBUG ?
+        this.camera.DestinationType.DATA_URL :
+        this.camera.DestinationType.FILE_URI,
+      sourceType: this.camera.PictureSourceType.CAMERA,
+      encodingType: this.camera.EncodingType.PNG,
+      mediaType: this.camera.MediaType.PICTURE,
+    };
+
+    this.photoLibraryOptions = {
+      quality: 100,
+      destinationType: this.DEBUG ?
+        this.camera.DestinationType.DATA_URL :
+        this.camera.DestinationType.FILE_URI,
+      sourceType: this.camera.PictureSourceType.PHOTOLIBRARY,
+      encodingType: this.camera.EncodingType.PNG,
+      mediaType: this.camera.MediaType.PICTURE,
+    };
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad ObservationPage');
-  }
+  takePicture(photoLibrary: boolean) {
+    this.platform.ready().then(() => {
+      if (this.platform.is('cordova')) {
 
+        this.camera.getPicture(photoLibrary ? this.photoLibraryOptions : this.cameraOptions)
+          .then((imageUrl) => {
+            if (!this.DEBUG) {
+              this.filePath.resolveNativePath(imageUrl)
+                .then((path) => {
+                  this.imageUrl = path;
+                }).catch((error) => {
+                  window.alert(error.message);
+                });
+            } else {
+              this.imageUrl = `data:image/png;base64,${imageUrl}`;
+            }
+          });
+
+      }
+    });
+  }
 }

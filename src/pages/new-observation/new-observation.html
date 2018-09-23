@@ -6,10 +6,15 @@
 
 <ion-content overflow-scroll="true">
   <div class="image-container">
-    <div class="image-overlay">
+    <div class="image-overlay" *ngIf="imageUrl === null">
       <ion-icon name="image"></ion-icon>
     </div>
-    <img src="/assets/imgs/default_leaf.jpg" />
+    <img [src]="imageUrl || 'assets/imgs/default_leaf.jpg'" />
+  </div>
+
+  <div class="img-button-container">
+    <button ion-button (click)="takePicture()">Ota kuva</button>
+    <button ion-button (click)="takePicture(true)">Tiedosto</button>
   </div>
 
   <ion-list>
@@ -25,7 +30,10 @@
 
     <ion-item-divider>Paikka</ion-item-divider>
 
-    <img ion-item src="/assets/imgs/map.png" />
+    <div ion-item>
+      <img src="assets/imgs/map.png" />
+      <button ion-button full>Valitse sijainti</button>
+    </div>
 
     <ion-item-divider>Kuvaus</ion-item-divider>
 
