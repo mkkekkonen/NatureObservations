@@ -3,6 +3,9 @@ import { NavController } from 'ionic-angular';
 
 import { MainMenuButtonComponent } from '../../components/main-menu-button/main-menu-button';
 import { NewObservationPage } from '../new-observation/new-observation';
+import { DebugPage } from '../debug/debug';
+import { PlantDatabaseProvider } from '../../providers/database/plant-database';
+import * as plantMiddleware from '../../providers/middleware/plant-middleware';
 
 @Component({
   selector: 'page-home',
@@ -10,10 +13,18 @@ import { NewObservationPage } from '../new-observation/new-observation';
 })
 export class HomePage {
 
-  newObservationPage = NewObservationPage;
+  DEBUG = true;
 
-  constructor(public navCtrl: NavController) {
+  newObservationPage = NewObservationPage;
+  debugPage = DebugPage;
+
+  constructor(public navCtrl: NavController, private plantDb: PlantDatabaseProvider) {
 
   }
 
+  ionViewDidEnter() {
+    plantMiddleware.getPlants().then((plants) => {
+      this.plantDb.updatePlants(plants);
+    });
+  }
 }
