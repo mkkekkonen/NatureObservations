@@ -6,10 +6,10 @@
 
 <ion-content overflow-scroll="true">
   <div class="image-container">
-    <div class="image-overlay" *ngIf="imageUrl === null">
+    <div class="image-overlay" *ngIf="!observation.imageData">
       <ion-icon name="image"></ion-icon>
     </div>
-    <img [src]="imageUrl || 'assets/imgs/default_leaf.jpg'" />
+    <img [src]="imageUrl" />
   </div>
 
   <div class="img-button-container">
@@ -18,14 +18,11 @@
   </div>
 
   <ion-list>
-    <ion-item>
-      <ion-label stacked>Kasvilaji</ion-label>
-      <ion-input type="text"></ion-input>
-    </ion-item>
+    <plant-autocomplete [setPlantCallback]="setPlant"></plant-autocomplete>
 
     <ion-item>
       <ion-label stacked>Tieteellinen nimi</ion-label>
-      <ion-input class="italic" value="Taraxacum officinale" disabled></ion-input>
+      <ion-input class="italic" [value]="latinName" disabled></ion-input>
     </ion-item>
 
     <ion-item-divider>Paikka</ion-item-divider>

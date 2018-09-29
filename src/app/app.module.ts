@@ -13,13 +13,18 @@ import { ListPage } from '../pages/list/list';
 import { NewObservationPage } from '../pages/new-observation/new-observation';
 import { DebugPage } from '../pages/debug/debug';
 
-import { MainMenuButtonComponent } from '../components/main-menu-button/main-menu-button'
+import { MainMenuButtonComponent } from '../components/main-menu-button/main-menu-button';
+import { PlantAutocompleteComponent } from '../components/plant-autocomplete/plant-autocomplete';
+import {
+  PlantAutocompleteItemComponent,
+} from '../components/plant-autocomplete-item/plant-autocomplete-item';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { DatabaseProvider } from '../providers/database/database';
 import { MiddlewareProvider } from '../providers/middleware/middleware';
 import { PlantDatabaseProvider } from '../providers/database/plant-database';
+import { PlantMiddlewareProvider } from '../providers/middleware/plant-middleware';
 
 @NgModule({
   declarations: [
@@ -29,6 +34,8 @@ import { PlantDatabaseProvider } from '../providers/database/plant-database';
     NewObservationPage,
     DebugPage,
     MainMenuButtonComponent,
+    PlantAutocompleteComponent,
+    PlantAutocompleteItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +61,7 @@ import { PlantDatabaseProvider } from '../providers/database/plant-database';
     DatabaseProvider,
     PlantDatabaseProvider,
     MiddlewareProvider,
+    PlantMiddlewareProvider,
   ],
 })
 export class AppModule {}

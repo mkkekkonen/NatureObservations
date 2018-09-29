@@ -3,6 +3,9 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FilePath } from '@ionic-native/file-path';
+import Observation from '../../models/observation/Observation';
+import ImgData from '../../models/image-data/ImgData';
+import Plant from '../../models/plant/Plant';
 
 /**
  * Generated class for the ObservationPage page.
@@ -20,7 +23,7 @@ export class NewObservationPage {
 
   DEBUG: boolean = true;
 
-  imageUrl: string = null;
+  observation: Observation = new Observation();
 
   cameraOptions: CameraOptions = null;
   photoLibraryOptions: CameraOptions = null;
@@ -47,6 +50,24 @@ export class NewObservationPage {
       encodingType: this.camera.EncodingType.PNG,
       mediaType: this.camera.MediaType.PICTURE,
     };
+
+    this.setPlant = this.setPlant.bind(this);
+  }
+
+  get imageUrl() {
+    if (this.observation.imageData) {
+      if (this.DEBUG && this.observation.imageData.debugDataUri) {
+        return this.observation.imageData.debugDataUri;
+      }
+      if (!this.DEBUG && this.observation.imageData.fileUri) {
+        return this.observation.imageData.fileUri;
+      }
+    }
+    return 'assets/imgs/default_leaf.jpg';
+  }
+
+  get latinName() {
+    return this.observation.plant && this.observation.plant.latinName;
   }
 
   takePicture(photoLibrary: boolean) {
@@ -58,16 +79,20 @@ export class NewObservationPage {
             if (!this.DEBUG) {
               this.filePath.resolveNativePath(imageUrl)
                 .then((path) => {
-                  this.imageUrl = path;
+                  this.observation.imageData = new ImgData(path);
                 }).catch((error) => {
                   window.alert(error.message);
                 });
             } else {
-              this.imageUrl = `data:image/png;base64,${imageUrl}`;
+              this.observation.imageData = new ImgData(null, `data:image/png;base64,${imageUrl}`);
             }
           });
 
       }
     });
+  }
+
+  setPlant(plant: Plant) {
+    this.observation.plant = plant;
   }
 }

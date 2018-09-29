@@ -1,0 +1,18 @@
+plant-autocomplete {
+
+  .relative-container {
+    position: relative;
+
+    .autocomplete-container {
+      background-color: #fff;
+      border: 1px solid #ccc;
+      border-radius: 0.5em;
+      padding: 1em;
+      position: absolute;
+      top: 0;
+      left: 1em;
+      width: calc(100% - 2em);
+      z-index: 1000;
+    }
+  }
+}

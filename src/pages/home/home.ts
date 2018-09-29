@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 
 import { MainMenuButtonComponent } from '../../components/main-menu-button/main-menu-button';
 import { NewObservationPage } from '../new-observation/new-observation';
 import { DebugPage } from '../debug/debug';
 import { PlantDatabaseProvider } from '../../providers/database/plant-database';
-import * as plantMiddleware from '../../providers/middleware/plant-middleware';
+import { PlantMiddlewareProvider, parsePlant } from '../../providers/middleware/plant-middleware';
 
 @Component({
   selector: 'page-home',
@@ -18,13 +18,19 @@ export class HomePage {
   newObservationPage = NewObservationPage;
   debugPage = DebugPage;
 
-  constructor(public navCtrl: NavController, private plantDb: PlantDatabaseProvider) {
+  constructor(public navCtrl: NavController, private plantDb: PlantDatabaseProvider,
+              private plantMiddleware: PlantMiddlewareProvider, private platform: Platform) {
 
   }
 
   ionViewDidEnter() {
-    plantMiddleware.getPlants().then((plants) => {
-      this.plantDb.updatePlants(plants);
-    });
+    this.plantMiddleware.getPlants().subscribe(
+      (plants) => {
+        this.platform.ready().then(() => {
+          this.plantDb.updatePlants(plants.map(plant => parsePlant(plant)));
+        });
+      },
+      (error) => { console.log(JSON.stringify(error)); },
+    );
   }
 }

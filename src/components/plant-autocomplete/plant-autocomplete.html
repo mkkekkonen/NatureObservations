@@ -1,0 +1,18 @@
+<ion-item>
+  <ion-label stacked>Kasvilaji</ion-label>
+  <ion-input
+    [value]="text"
+    type="text"
+    (keyup)="handleTextInput($event)"
+  ></ion-input>
+</ion-item>
+
+<div class="relative-container">
+  <div class="autocomplete-container" *ngIf="showAutocomplete && shownPlants.length > 0">
+    <plant-autocomplete-item
+      *ngFor="let plant of shownPlants"
+      [plant]="plant"
+      (click)="setPlant(plant)"
+    ></plant-autocomplete-item>
+  </div>
+</div>

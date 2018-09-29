@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import { flatten } from 'lodash';
+import * as moment from 'moment';
 
 import { DB_FILE_NAME, DB_LOCATION } from './database';
 import Plant from '../../models/plant/Plant';
@@ -60,6 +61,29 @@ export class PlantDatabaseProvider {
       db.executeSql(insertReplaceSql, flattenedArray)
         .then(() => console.log('Success'))
         .catch(error => console.log(`Error: ${JSON.stringify(error)}`));
+    });
+  }
+
+  public getPlants(): Promise<Plant[]> {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      const sql = 'SELECT * FROM plants';
+      return db.executeSql(sql, [])
+        .then((data) => {
+          const plants = [];
+          for (let i = 0; i < data.rows.length; i += 1) {
+            const plant = new Plant(
+              data.rows.item(i).id,
+              data.rows.item(i).name,
+              data.rows.item(i).latinname,
+              moment(data.rows.item(i).updated),
+            );
+            plants.push(plant);
+          }
+          return plants;
+        });
     });
   }
 }

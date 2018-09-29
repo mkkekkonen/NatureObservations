@@ -1,16 +1,27 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { basePath } from './middleware';
 import Plant from '../../models/plant/Plant';
+import { basePath } from './middleware';
+import { Observable } from 'rxjs/Observable';
 
-const parsePlant = (jsonPlant): Plant => new Plant(
-  jsonPlant.id,
-  jsonPlant.name,
-  jsonPlant.latinname,
-  moment(jsonPlant.updated),
-);
-
-export const getPlants = (): Promise<Plant[]> => {
-  return fetch(`${basePath}/getspecies.php`)
-    .then(response => response.json())
-    .then(json => json.map(listPlant => parsePlant(listPlant)));
+export const parsePlant = (jsonPlant): Plant => {
+  return new Plant(
+    jsonPlant.id,
+    jsonPlant.name,
+    jsonPlant.latinname,
+    moment(jsonPlant.updated),
+  );
 };
+
+@Injectable()
+export class PlantMiddlewareProvider {
+
+  constructor(public http: HttpClient) {
+    console.log('Hello PlantMiddlewareProvider Provider');
+  }
+
+  getPlants(): Observable<any> {
+    return this.http.get(`${basePath}/getspecies.php`);
+  }
+}
