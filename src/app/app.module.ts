@@ -6,12 +6,14 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { Camera } from '@ionic-native/camera';
 import { FilePath } from '@ionic-native/file-path';
 import { SQLite } from '@ionic-native/sqlite';
+import { Geolocation } from '@ionic-native/geolocation';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { NewObservationPage } from '../pages/new-observation/new-observation';
 import { DebugPage } from '../pages/debug/debug';
+import { MapModalPage } from '../pages/map-modal/map-modal';
 
 import { MainMenuButtonComponent } from '../components/main-menu-button/main-menu-button';
 import { PlantAutocompleteComponent } from '../components/plant-autocomplete/plant-autocomplete';
@@ -33,6 +35,7 @@ import { PlantMiddlewareProvider } from '../providers/middleware/plant-middlewar
     ListPage,
     NewObservationPage,
     DebugPage,
+    MapModalPage,
     MainMenuButtonComponent,
     PlantAutocompleteComponent,
     PlantAutocompleteItemComponent,
@@ -49,6 +52,7 @@ import { PlantMiddlewareProvider } from '../providers/middleware/plant-middlewar
     ListPage,
     NewObservationPage,
     DebugPage,
+    MapModalPage,
   ],
   providers: [
     StatusBar,
@@ -57,6 +61,7 @@ import { PlantMiddlewareProvider } from '../providers/middleware/plant-middlewar
     Camera,
     FilePath,
     SQLite,
+    Geolocation,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     DatabaseProvider,
     PlantDatabaseProvider,

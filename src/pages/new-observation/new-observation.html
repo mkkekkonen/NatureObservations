@@ -28,8 +28,8 @@
     <ion-item-divider>Paikka</ion-item-divider>
 
     <div ion-item>
-      <img src="assets/imgs/map.png" />
-      <button ion-button full>Valitse sijainti</button>
+      <div class="map" #map></div>
+      <button ion-button full (click)="openMapModal()">Valitse sijainti</button>
     </div>
 
     <ion-item-divider>Kuvaus</ion-item-divider>

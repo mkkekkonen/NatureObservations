@@ -1,0 +1,21 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Valitse sijainti</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-searchbar placeholder="paikka" #placesearch></ion-searchbar>
+
+  <div class="center">
+    <button ion-button>Oma sijainti</button>
+  </div>
+
+  <p>Klikkaa karttaa valitaksesi sijainnin</p>
+
+  <div class="map" #map></div>
+
+  <button ion-button full (click)="goBack()">Valmis</button>
+</ion-content>
