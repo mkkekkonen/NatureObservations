@@ -1,21 +1,21 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Valitse sijainti</ion-title>
+    <ion-title>{{ 'MAP.PICKLOC' | translate }}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 <ion-content padding>
-  <ion-searchbar placeholder="paikka" #placesearch></ion-searchbar>
+  <ion-searchbar placeholder="{{ 'MAP.LOC' | translate }}" #placesearch></ion-searchbar>
 
   <div class="center">
-    <button ion-button>Oma sijainti</button>
+    <button ion-button>{{ 'MAP.MYLOC' | translate }}</button>
   </div>
 
-  <p>Klikkaa karttaa valitaksesi sijainnin</p>
+  <p>{{ 'MAP.CLICKMAP' | translate }}</p>
 
   <div class="map" #map></div>
 
-  <button ion-button full (click)="goBack()">Valmis</button>
+  <button ion-button full (click)="goBack()">{{ 'MAP.READY' | translate }}</button>
 </ion-content>

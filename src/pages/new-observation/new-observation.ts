@@ -1,6 +1,13 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { IonicPage, NavController, NavParams, Platform, ModalController, Modal } from 'ionic-angular';
+import {
+  IonicPage,
+  NavController,
+  NavParams,
+  Platform,
+  ModalController,
+  Modal,
+} from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FilePath } from '@ionic-native/file-path';
 import { Geolocation } from '@ionic-native/geolocation';
@@ -11,13 +18,6 @@ import { MapModalPage } from '../map-modal/map-modal';
 import MapLocation from '../../models/map-location/MapLocation';
 
 declare var google;
-
-/**
- * Generated class for the ObservationPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({

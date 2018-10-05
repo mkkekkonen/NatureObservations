@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 
-import { MainMenuButtonComponent } from '../../components/main-menu-button/main-menu-button';
 import { NewObservationPage } from '../new-observation/new-observation';
 import { DebugPage } from '../debug/debug';
 import { PlantDatabaseProvider } from '../../providers/database/plant-database';
@@ -20,7 +19,6 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, private plantDb: PlantDatabaseProvider,
               private plantMiddleware: PlantMiddlewareProvider, private platform: Platform) {
-
   }
 
   ionViewDidEnter() {

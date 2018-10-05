@@ -1,0 +1,29 @@
+{
+  "HOME": {
+    "NEWOBS": "Uusi havainto",
+    "MYOBS": "Omat havainnot",
+    "IDGUIDE": "Määritysopas",
+    "DB": "Kasvitietokanta",
+    "DEBUG": "Debug"
+  },
+  "PAC": {
+    "PLANT": "Kasvilaji"
+  },
+  "NEWOBS": {
+    "NEWOBS": "Uusi havainto",
+    "TAKEPIC": "Ota kuva",
+    "FILE": "Tiedosto",
+    "LATINNAME": "Tieteellinen nimi",
+    "LOCATION": "Sijainti",
+    "PICKLOC": "Valitse sijainti",
+    "DESCR": "Kuvaus",
+    "SAVE": "Tallenna"
+  },
+  "MAP": {
+    "PICKLOC": "Valitse sijainti",
+    "LOC": "Paikka",
+    "MYLOC": "Oma sijainti",
+    "CLICKMAP": "Klikkaa karttaa valitaksesi sijainnin",
+    "READY": "Valmis"
+  }
+}

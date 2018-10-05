@@ -1,7 +1,13 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import {
-  IonicPage, NavController, NavParams, Platform, Searchbar, ViewController,
+  IonicPage,
+  NavController,
+  NavParams,
+  Platform,
+  Searchbar,
+  ViewController,
 } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 import MapLocation from '../../models/map-location/MapLocation';
 
 declare var google;
@@ -24,7 +30,8 @@ export class MapModalPage {
   mapLocationSet: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private platform: Platform, private viewCtrl: ViewController) {
+              private platform: Platform, private viewCtrl: ViewController,
+              private translate: TranslateService) {
   }
 
   ionViewDidLoad() {

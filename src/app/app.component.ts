@@ -2,27 +2,32 @@ import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { TranslateService } from '@ngx-translate/core';
+import { Globalization } from '@ionic-native/globalization';
 
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
+import * as constants from '../constants/constants';
 
 @Component({
-  templateUrl: 'app.html'
+  templateUrl: 'app.html',
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = HomePage;
 
-  pages: Array<{title: string, component: any}>;
+  pages: {title: string, component: any}[];
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar,
+              public splashScreen: SplashScreen, private translateService: TranslateService,
+              private globalization: Globalization) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage }
+      { title: 'List', component: ListPage },
     ];
 
   }
@@ -33,7 +38,26 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       this.statusBar.styleDefault();
       this.splashScreen.hide();
+
+      this.translateService.setDefaultLang('fi');
+      this.translateService.use('fi');
+
+      if ((<any>window).cordova) {
+        this.globalization.getPreferredLanguage().then((result) => {
+          const code = result.value.substring(0, 2).toLowerCase();
+          // if (code === 'fi') {
+          //   this.setLanguage('fi');
+          // } else {
+          //   this.setLanguage('en');
+          // }
+        });
+      }
     });
+  }
+
+  setLanguage(lang) {
+    this.translateService.use(lang);
+    constants.systemOptions.systemLanguage = lang;
   }
 
   openPage(page) {

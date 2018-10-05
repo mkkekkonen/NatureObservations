@@ -1,0 +1,29 @@
+{
+  "HOME": {
+    "NEWOBS": "New observation",
+    "MYOBS": "My observations",
+    "IDGUIDE": "Identification guide",
+    "DB": "Database",
+    "DEBUG": "Debug"
+  },
+  "PAC": {
+    "PLANT": "Plant species"
+  },
+  "NEWOBS": {
+    "NEWOBS": "New observation",
+    "TAKEPIC": "Take a picture",
+    "FILE": "File",
+    "LATINNAME": "Latin name",
+    "LOCATION": "Location",
+    "PICKLOC": "Choose a location",
+    "DESCR": "Description",
+    "SAVE": "Save"
+  },
+  "MAP": {
+    "PICKLOC": "Choose a location",
+    "LOC": "Location",
+    "MYLOC": "My location",
+    "CLICKMAP": "Click on the map to pick a location",
+    "READY": "Done"
+  }
+}

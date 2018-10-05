@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Uusi havainto</ion-title>
+    <ion-title>{{ 'NEWOBS.NEWOBS' | translate }}</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -13,32 +13,32 @@
   </div>
 
   <div class="img-button-container">
-    <button ion-button (click)="takePicture()">Ota kuva</button>
-    <button ion-button (click)="takePicture(true)">Tiedosto</button>
+    <button ion-button (click)="takePicture()">{{ 'NEWOBS.TAKEPIC' | translate }}</button>
+    <button ion-button (click)="takePicture(true)">{{ 'NEWOBS.FILE' | translate }}</button>
   </div>
 
   <ion-list>
     <plant-autocomplete [setPlantCallback]="setPlant"></plant-autocomplete>
 
     <ion-item>
-      <ion-label stacked>Tieteellinen nimi</ion-label>
+      <ion-label stacked>{{ 'NEWOBS.LATINNAME' | translate }}</ion-label>
       <ion-input class="italic" [value]="latinName" disabled></ion-input>
     </ion-item>
 
-    <ion-item-divider>Paikka</ion-item-divider>
+    <ion-item-divider>{{ 'NEWOBS.LOCATION' | translate }}</ion-item-divider>
 
     <div ion-item>
       <div class="map" #map></div>
-      <button ion-button full (click)="openMapModal()">Valitse sijainti</button>
+      <button ion-button full (click)="openMapModal()">{{ 'NEWOBS.PICKLOC' | translate }}</button>
     </div>
 
-    <ion-item-divider>Kuvaus</ion-item-divider>
+    <ion-item-divider>{{ 'NEWOBS.DESCR' | translate }}</ion-item-divider>
 
     <ion-item>
-      <ion-label stacked>Kuvaus</ion-label>
+      <ion-label stacked>{{ 'NEWOBS.DESCR' | translate }}</ion-label>
       <ion-textarea></ion-textarea>
     </ion-item>
   </ion-list>
 
-  <button ion-button full>Tallenna</button>
+  <button ion-button full>{{ 'NEWOBS.SAVE' | translate }}</button>
 </ion-content>

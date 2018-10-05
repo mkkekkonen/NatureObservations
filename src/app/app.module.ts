@@ -7,6 +7,9 @@ import { Camera } from '@ionic-native/camera';
 import { FilePath } from '@ionic-native/file-path';
 import { SQLite } from '@ionic-native/sqlite';
 import { Geolocation } from '@ionic-native/geolocation';
+import { Globalization } from '@ionic-native/globalization';
+import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -28,6 +31,9 @@ import { MiddlewareProvider } from '../providers/middleware/middleware';
 import { PlantDatabaseProvider } from '../providers/database/plant-database';
 import { PlantMiddlewareProvider } from '../providers/middleware/plant-middleware';
 
+export const createTranslateLoader = (http: HttpClient) =>
+  new TranslateHttpLoader(http, 'assets/i18n/', '.json');
+
 @NgModule({
   declarations: [
     MyApp,
@@ -44,6 +50,13 @@ import { PlantMiddlewareProvider } from '../providers/middleware/plant-middlewar
     BrowserModule,
     HttpClientModule,
     IonicModule.forRoot(MyApp),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: createTranslateLoader,
+        deps: [HttpClient],
+      },
+    }),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -62,6 +75,8 @@ import { PlantMiddlewareProvider } from '../providers/middleware/plant-middlewar
     FilePath,
     SQLite,
     Geolocation,
+    Globalization,
+    TranslateService,
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     DatabaseProvider,
     PlantDatabaseProvider,

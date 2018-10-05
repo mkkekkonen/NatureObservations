@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Platform } from 'ionic-angular';
+import { TranslateService } from '@ngx-translate/core';
 import { PlantDatabaseProvider } from '../../providers/database/plant-database';
 import Plant from '../../models/plant/Plant';
 
