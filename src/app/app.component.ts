@@ -40,16 +40,15 @@ export class MyApp {
       this.splashScreen.hide();
 
       this.translateService.setDefaultLang('fi');
-      this.translateService.use('fi');
 
       if ((<any>window).cordova) {
         this.globalization.getPreferredLanguage().then((result) => {
           const code = result.value.substring(0, 2).toLowerCase();
-          // if (code === 'fi') {
-          //   this.setLanguage('fi');
-          // } else {
-          //   this.setLanguage('en');
-          // }
+          if (code === 'fi') {
+            this.setLanguage('fi');
+          } else {
+            this.setLanguage('en');
+          }
         });
       }
     });
