@@ -18,7 +18,7 @@
   </div>
 
   <ion-list>
-    <plant-autocomplete [setPlantCallback]="setPlant"></plant-autocomplete>
+    <plant-autocomplete (change)="updateInputtedName($event.target.value)" [setPlantCallback]="setPlant"></plant-autocomplete>
 
     <ion-item>
       <ion-label stacked>{{ 'NEWOBS.LATINNAME' | translate }}</ion-label>
@@ -36,9 +36,9 @@
 
     <ion-item>
       <ion-label stacked>{{ 'NEWOBS.DESCR' | translate }}</ion-label>
-      <ion-textarea></ion-textarea>
+      <ion-textarea [(ngModel)]="observation.description"></ion-textarea>
     </ion-item>
   </ion-list>
 
-  <button ion-button full>{{ 'NEWOBS.SAVE' | translate }}</button>
+  <button ion-button full (click)="save()">{{ 'NEWOBS.SAVE' | translate }}</button>
 </ion-content>

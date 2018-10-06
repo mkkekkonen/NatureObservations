@@ -17,7 +17,8 @@
     "LOCATION": "Sijainti",
     "PICKLOC": "Valitse sijainti",
     "DESCR": "Kuvaus",
-    "SAVE": "Tallenna"
+    "SAVE": "Tallenna",
+    "PICKPLT": "Kasvilajia ei ole valittu!"
   },
   "MAP": {
     "PICKLOC": "Valitse sijainti",

@@ -11,11 +11,14 @@ import {
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FilePath } from '@ionic-native/file-path';
 import { Geolocation } from '@ionic-native/geolocation';
+import { TranslateService } from '@ngx-translate/core';
 import Observation from '../../models/observation/Observation';
 import ImgData from '../../models/image-data/ImgData';
 import Plant from '../../models/plant/Plant';
 import { MapModalPage } from '../map-modal/map-modal';
-import MapLocation from '../../models/map-location/MapLocation';
+import { ImageDatabaseProvider } from '../../providers/database/image-database';
+import { MapLocationDatabaseProvider } from '../../providers/database/map-location-database';
+import { ObservationDatabaseProvider } from '../../providers/database/observation-database';
 
 declare var google;
 
@@ -41,7 +44,11 @@ export class NewObservationPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private camera: Camera, public platform: Platform,
               private filePath: FilePath, private sanitizer: DomSanitizer,
-              private geolocation: Geolocation, private modalCtrl: ModalController) {
+              private geolocation: Geolocation, private modalCtrl: ModalController,
+              private imageDb: ImageDatabaseProvider,
+              private mapLocationDb: MapLocationDatabaseProvider,
+              private observationDb: ObservationDatabaseProvider,
+              private translate: TranslateService) {
     this.cameraOptions = {
       quality: 100,
       destinationType: this.DEBUG ?
@@ -63,6 +70,7 @@ export class NewObservationPage {
     };
 
     this.setPlant = this.setPlant.bind(this);
+    this.updateInputtedName = this.updateInputtedName.bind(this);
   }
 
   ionViewDidLoad() {
@@ -85,6 +93,10 @@ export class NewObservationPage {
 
   get latinName() {
     return this.observation.plant && this.observation.plant.latinName;
+  }
+
+  updateInputtedName(name) {
+    this.observation.inputtedName = name;
   }
 
   takePicture(photoLibrary: boolean) {
@@ -155,16 +167,31 @@ export class NewObservationPage {
   openMapModal() {
     const mapModal = this.modalCtrl.create(MapModalPage);
     mapModal.onDidDismiss((responseObj) => {
-      this.observation.mapLocation = responseObj.mapLocation;
-      this.setMarkerAndPan(new google.maps.LatLng(
-        responseObj.mapLocation.latitude,
-        responseObj.mapLocation.longitude,
-      ));
+      if (responseObj && responseObj.mapLocation) {
+        this.observation.mapLocation = responseObj.mapLocation;
+        this.setMarkerAndPan(new google.maps.LatLng(
+          responseObj.mapLocation.latitude,
+          responseObj.mapLocation.longitude,
+        ));
+      }
     });
     mapModal.present();
   }
 
   setPlant(plant: Plant) {
     this.observation.plant = plant;
+  }
+
+  save() {
+    if (!this.observation.plant || !this.observation.plant.id) {
+      window.alert(this.translate.instant('NEWOBS.PICKPLT'));
+      return;
+    }
+
+    this.imageDb.insertImage(this.observation.imageData).then(() => {
+      this.mapLocationDb.insertMapLocation(this.observation.mapLocation).then(() => {
+        this.observationDb.insertObservation(this.observation);
+      });
+    });
   }
 }

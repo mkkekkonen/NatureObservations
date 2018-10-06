@@ -8,6 +8,7 @@ import { Globalization } from '@ionic-native/globalization';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import * as constants from '../constants/constants';
+import { DatabaseProvider } from '../providers/database/database';
 
 @Component({
   templateUrl: 'app.html',
@@ -21,7 +22,7 @@ export class MyApp {
 
   constructor(public platform: Platform, public statusBar: StatusBar,
               public splashScreen: SplashScreen, private translateService: TranslateService,
-              private globalization: Globalization) {
+              private globalization: Globalization, private databaseProvider: DatabaseProvider) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
@@ -50,6 +51,9 @@ export class MyApp {
             this.setLanguage('en');
           }
         });
+
+        this.databaseProvider.createTables();
+        this.databaseProvider.migrate();
       }
     });
   }

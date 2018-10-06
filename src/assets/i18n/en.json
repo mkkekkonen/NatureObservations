@@ -17,7 +17,8 @@
     "LOCATION": "Location",
     "PICKLOC": "Choose a location",
     "DESCR": "Description",
-    "SAVE": "Save"
+    "SAVE": "Save",
+    "PICKPLT": "No plant species has been chosen!"
   },
   "MAP": {
     "PICKLOC": "Choose a location",

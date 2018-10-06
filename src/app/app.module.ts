@@ -30,6 +30,9 @@ import { DatabaseProvider } from '../providers/database/database';
 import { MiddlewareProvider } from '../providers/middleware/middleware';
 import { PlantDatabaseProvider } from '../providers/database/plant-database';
 import { PlantMiddlewareProvider } from '../providers/middleware/plant-middleware';
+import { ImageDatabaseProvider } from '../providers/database/image-database';
+import { MapLocationDatabaseProvider } from '../providers/database/map-location-database';
+import { ObservationDatabaseProvider } from '../providers/database/observation-database';
 
 export const createTranslateLoader = (http: HttpClient) =>
   new TranslateHttpLoader(http, 'assets/i18n/', '.json');
@@ -82,6 +85,9 @@ export const createTranslateLoader = (http: HttpClient) =>
     PlantDatabaseProvider,
     MiddlewareProvider,
     PlantMiddlewareProvider,
+    ImageDatabaseProvider,
+    MapLocationDatabaseProvider,
+    ObservationDatabaseProvider,
   ],
 })
 export class AppModule {}

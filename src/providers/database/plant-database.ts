@@ -51,12 +51,6 @@ export class PlantDatabaseProvider {
       name: DB_FILE_NAME,
       location: DB_LOCATION,
     }).then((db: SQLiteObject) => {
-      let createSql = 'CREATE TABLE IF NOT EXISTS plants\n';
-      createSql += '(id INTEGER PRIMARY KEY, name TEXT, latinname TEXT, updated TEXT)';
-      db.executeSql(createSql, [])
-        .then(() => console.log('Success'))
-        .catch(error => console.log(`Error: ${JSON.stringify(error)}`));
-
       const { insertReplaceSql, flattenedArray } = formulatePlantSql(plants);
       db.executeSql(insertReplaceSql, flattenedArray)
         .then(() => console.log('Success'))
