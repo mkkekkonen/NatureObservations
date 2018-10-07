@@ -17,12 +17,14 @@ import { ListPage } from '../pages/list/list';
 import { NewObservationPage } from '../pages/new-observation/new-observation';
 import { DebugPage } from '../pages/debug/debug';
 import { MapModalPage } from '../pages/map-modal/map-modal';
+import { MyObservationsPage } from '../pages/my-observations/my-observations';
 
 import { MainMenuButtonComponent } from '../components/main-menu-button/main-menu-button';
 import { PlantAutocompleteComponent } from '../components/plant-autocomplete/plant-autocomplete';
 import {
   PlantAutocompleteItemComponent,
 } from '../components/plant-autocomplete-item/plant-autocomplete-item';
+import { ObservationCardComponent } from '../components/observation-card/observation-card';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -45,9 +47,11 @@ export const createTranslateLoader = (http: HttpClient) =>
     NewObservationPage,
     DebugPage,
     MapModalPage,
+    MyObservationsPage,
     MainMenuButtonComponent,
     PlantAutocompleteComponent,
     PlantAutocompleteItemComponent,
+    ObservationCardComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,6 +73,7 @@ export const createTranslateLoader = (http: HttpClient) =>
     NewObservationPage,
     DebugPage,
     MapModalPage,
+    MyObservationsPage,
   ],
   providers: [
     StatusBar,

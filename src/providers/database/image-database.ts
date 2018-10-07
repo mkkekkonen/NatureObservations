@@ -11,7 +11,7 @@ export class ImageDatabaseProvider {
     console.log('Hello ImageDatabaseProvider Provider');
   }
 
-  insertImage(imageData: ImgData): Promise<any> {
+  public insertImage(imageData: ImgData): Promise<any> {
     if (imageData) {
       return this.sqlite.create({
         name: DB_FILE_NAME,
@@ -36,7 +36,30 @@ export class ImageDatabaseProvider {
     return new Promise(resolve => resolve(null));
   }
 
-  deleteAllImages() {
+  public getImages(): Promise<ImgData[]> {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      const sql = 'SELECT * FROM imgdata';
+      return db.executeSql(sql, [])
+        .then((data) => {
+          const images = [];
+          for (let i = 0; i < data.rows.length; i += 1) {
+            const dbImgData = data.rows.item(i);
+            const imgData = new ImgData(
+              dbImgData.fileuri,
+              dbImgData.debugdatauri,
+              dbImgData.id,
+            );
+            images.push(imgData);
+          }
+          return images;
+        });
+    });
+  }
+
+  public deleteAllImages() {
     this.sqlite.create({
       name: DB_FILE_NAME,
       location: DB_LOCATION,

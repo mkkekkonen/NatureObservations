@@ -68,11 +68,12 @@ export class PlantDatabaseProvider {
         .then((data) => {
           const plants = [];
           for (let i = 0; i < data.rows.length; i += 1) {
+            const plantData = data.rows.item(i);
             const plant = new Plant(
-              data.rows.item(i).id,
-              data.rows.item(i).name,
-              data.rows.item(i).latinname,
-              moment(data.rows.item(i).updated),
+              plantData.id,
+              plantData.name,
+              plantData.latinname,
+              moment(plantData.updated),
             );
             plants.push(plant);
           }

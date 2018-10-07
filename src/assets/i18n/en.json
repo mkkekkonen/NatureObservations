@@ -26,5 +26,8 @@
     "MYLOC": "My location",
     "CLICKMAP": "Click on the map to pick a location",
     "READY": "Done"
+  },
+  "MYOBS": {
+    "MYOBS": "My Observations"
   }
 }

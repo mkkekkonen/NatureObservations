@@ -26,5 +26,8 @@
     "MYLOC": "Oma sijainti",
     "CLICKMAP": "Klikkaa karttaa valitaksesi sijainnin",
     "READY": "Valmis"
+  },
+  "MYOBS": {
+    "MYOBS": "Omat havainnot"
   }
 }

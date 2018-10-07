@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 
 import { NewObservationPage } from '../new-observation/new-observation';
+import { MyObservationsPage } from '../my-observations/my-observations';
 import { DebugPage } from '../debug/debug';
 import { PlantDatabaseProvider } from '../../providers/database/plant-database';
 import { PlantMiddlewareProvider, parsePlant } from '../../providers/middleware/plant-middleware';
@@ -15,6 +16,7 @@ export class HomePage {
   DEBUG = true;
 
   newObservationPage = NewObservationPage;
+  myObservationsPage = MyObservationsPage;
   debugPage = DebugPage;
 
   constructor(public navCtrl: NavController, private plantDb: PlantDatabaseProvider,

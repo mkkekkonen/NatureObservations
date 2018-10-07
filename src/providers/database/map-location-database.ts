@@ -17,7 +17,7 @@ export class MapLocationDatabaseProvider {
         name: DB_FILE_NAME,
         location: DB_LOCATION,
       }).then((db: SQLiteObject) => {
-        let insertMapLocationSql = 'INSERT INTO maplocation (name, latitude, longitude)\n';
+        let insertMapLocationSql = 'INSERT INTO maplocations (name, latitude, longitude)\n';
         insertMapLocationSql += 'VALUES (?, ?, ?)';
         const valuesArray = [
           mapLocation.name || '',
@@ -40,5 +40,29 @@ export class MapLocationDatabaseProvider {
       });
     }
     return new Promise(resolve => resolve(null));
+  }
+
+  public getMapLocations(): Promise<MapLocation[]> {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      const sql = 'SELECT * FROM maplocations';
+      return db.executeSql(sql, [])
+        .then((data) => {
+          const mapLocations = [];
+          for (let i = 0; i < data.rows.length; i += 1) {
+            const mapLocData = data.rows.item(i);
+            const mapLocation = new MapLocation(
+              mapLocData.id,
+              mapLocData.name,
+              mapLocData.latitude,
+              mapLocData.longitude,
+            );
+            mapLocations.push(mapLocation);
+          }
+          return mapLocations;
+        });
+    });
   }
 }
