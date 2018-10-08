@@ -4,6 +4,13 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import MapLocation from '../../models/map-location/MapLocation';
 import { DB_FILE_NAME, DB_LOCATION } from './database';
 
+const createMapLocation = mapLocationData => new MapLocation(
+  mapLocationData.id,
+  mapLocationData.name,
+  mapLocationData.latitude,
+  mapLocationData.longitude,
+);
+
 @Injectable()
 export class MapLocationDatabaseProvider {
 
@@ -53,15 +60,27 @@ export class MapLocationDatabaseProvider {
           const mapLocations = [];
           for (let i = 0; i < data.rows.length; i += 1) {
             const mapLocData = data.rows.item(i);
-            const mapLocation = new MapLocation(
-              mapLocData.id,
-              mapLocData.name,
-              mapLocData.latitude,
-              mapLocData.longitude,
-            );
+            const mapLocation = createMapLocation(mapLocData);
             mapLocations.push(mapLocation);
           }
           return mapLocations;
+        });
+    });
+  }
+
+  public getMapLocationById(id: number): Promise<MapLocation> {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      const sql = 'SELECT * FROM maplocations WHERE id = ?';
+      return db.executeSql(sql, [id])
+        .then((data) => {
+          if (data.rows.length > 0) {
+            const mapLocData = data.rows.item(0);
+            return createMapLocation(mapLocData);
+          }
+          return null;
         });
     });
   }

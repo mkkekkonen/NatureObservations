@@ -18,8 +18,8 @@ export class ObservationDatabaseProvider {
     console.log('Hello ObservationDatabaseProvider Provider');
   }
 
-  public insertObservation(observation: Observation) {
-    this.sqlite.create({
+  public insertObservation(observation: Observation): Promise<void> {
+    return this.sqlite.create({
       name: DB_FILE_NAME,
       location: DB_LOCATION,
     }).then((db: SQLiteObject) => {
@@ -35,7 +35,7 @@ export class ObservationDatabaseProvider {
         observation.description,
         (observation.imageData && observation.imageData.id) || 'NULL',
       ];
-      db.transaction((tx) => {
+      return db.transaction((tx) => {
         tx.executeSql(insertObservationSql, valuesArray,
                       () => console.log('Successfully inserted observation'),
                       (tx, error) => console.log(`Error inserting image: ${error.message}`));
@@ -80,6 +80,39 @@ export class ObservationDatabaseProvider {
               });
             });
           });
+        });
+    });
+  }
+
+  public getObservationById(id: number): Promise<Observation> {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      const sql = 'SELECT * FROM OBSERVATIONS WHERE id = ?';
+      return db.executeSql(sql, [id])
+        .then((data) => {
+          if (data.rows.length > 0) {
+            const obsData = data.rows.item(0);
+            return this.plantDb.getPlantById(obsData.plantid).then((plant) => {
+              return this.mapLocDb.getMapLocationById(obsData.maplocationid || 0)
+                .then((mapLocation) => {
+                  return this.imageDb.getImageById(obsData.imageid || 0).then((image) => {
+                    return new Observation(
+                      obsData.id,
+                      plant,
+                      obsData.inputtedname,
+                      '',
+                      moment(obsData.date),
+                      mapLocation,
+                      obsData.description,
+                      image,
+                    );
+                  });
+                });
+            });
+          }
+          return null;
         });
     });
   }

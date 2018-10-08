@@ -10,7 +10,7 @@
   <ion-searchbar placeholder="{{ 'MAP.LOC' | translate }}" #placesearch></ion-searchbar>
 
   <div class="center">
-    <button ion-button>{{ 'MAP.MYLOC' | translate }}</button>
+    <button ion-button (click)="getMyLocation()">{{ 'MAP.MYLOC' | translate }}</button>
   </div>
 
   <p>{{ 'MAP.CLICKMAP' | translate }}</p>

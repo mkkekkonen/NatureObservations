@@ -20,6 +20,14 @@
     "SAVE": "Tallenna",
     "PICKPLT": "Kasvilajia ei ole valittu!"
   },
+  "VIEWOBS": {
+    "OBS": "Havainto",
+    "EDIT": "Muokkaa",
+    "SPEC": "Laji",
+    "DATE": "Päivämäärä",
+    "LOCATION": "Sijainti",
+    "DESCR": "Kuvaus"
+  },
   "MAP": {
     "PICKLOC": "Valitse sijainti",
     "LOC": "Paikka",

@@ -4,6 +4,12 @@ import { SQLite, SQLiteObject } from '@ionic-native/sqlite';
 import ImgData from '../../models/image-data/ImgData';
 import { DB_FILE_NAME, DB_LOCATION } from './database';
 
+const createImage = imageData => new ImgData(
+  imageData.fileuri,
+  imageData.debugdatauri,
+  imageData.id,
+);
+
 @Injectable()
 export class ImageDatabaseProvider {
 
@@ -47,11 +53,7 @@ export class ImageDatabaseProvider {
           const images = [];
           for (let i = 0; i < data.rows.length; i += 1) {
             const dbImgData = data.rows.item(i);
-            const imgData = new ImgData(
-              dbImgData.fileuri,
-              dbImgData.debugdatauri,
-              dbImgData.id,
-            );
+            const imgData = createImage(dbImgData);
             images.push(imgData);
           }
           return images;
@@ -68,6 +70,23 @@ export class ImageDatabaseProvider {
       db.executeSql(dropImagesSql, [])
         .then(data => console.log('Successfully deleted images'))
         .catch(err => console.log(`Error deleting images: ${err.message}`));
+    });
+  }
+
+  public getImageById(id: number): Promise<ImgData> {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      const sql = 'SELECT * FROM imgdata WHERE id = ?';
+      return db.executeSql(sql, [id])
+        .then((data) => {
+          if (data.rows.length > 0) {
+            const imgDataDb = data.rows.item(0);
+            return createImage(imgDataDb);
+          }
+          return null;
+        });
     });
   }
 }

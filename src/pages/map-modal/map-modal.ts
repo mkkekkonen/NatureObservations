@@ -8,6 +8,7 @@ import {
   ViewController,
 } from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
+import { Geolocation } from '@ionic-native/geolocation';
 import MapLocation from '../../models/map-location/MapLocation';
 
 declare var google;
@@ -31,7 +32,7 @@ export class MapModalPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private platform: Platform, private viewCtrl: ViewController,
-              private translate: TranslateService) {
+              private translate: TranslateService, private geolocation: Geolocation) {
   }
 
   ionViewDidLoad() {
@@ -46,6 +47,7 @@ export class MapModalPage {
       center: latLng,
       zoom: 15,
       mapTypeId: 'terrain',
+      disableDefaultUI: true,
     };
     this.map = new google.maps.Map(this.mapDiv.nativeElement, mapOptions);
     this.map.addListener('click', (event) => {
@@ -89,5 +91,15 @@ export class MapModalPage {
     } else {
       this.viewCtrl.dismiss({ mapLocation: this.mapLocation });
     }
+  }
+
+  getMyLocation() {
+    this.geolocation.getCurrentPosition().then((response) => {
+      const latLng = new google.maps.LatLng(
+        response.coords.latitude,
+        response.coords.longitude,
+      );
+      this.setMapLocation('', latLng);
+    });
   }
 }

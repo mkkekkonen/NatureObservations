@@ -19,6 +19,13 @@ export const formulatePlantSql = (plants: Plant[]) => {
   return { flattenedArray, insertReplaceSql };
 };
 
+const createPlant = plantData => new Plant(
+  plantData.id,
+  plantData.name,
+  plantData.latinname,
+  moment(plantData.updated),
+);
+
 @Injectable()
 export class PlantDatabaseProvider {
 
@@ -69,15 +76,27 @@ export class PlantDatabaseProvider {
           const plants = [];
           for (let i = 0; i < data.rows.length; i += 1) {
             const plantData = data.rows.item(i);
-            const plant = new Plant(
-              plantData.id,
-              plantData.name,
-              plantData.latinname,
-              moment(plantData.updated),
-            );
+            const plant = createPlant(plantData);
             plants.push(plant);
           }
           return plants;
+        });
+    });
+  }
+
+  public getPlantById(id: number): Promise<Plant> {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      const sql = 'SELECT * FROM plants WHERE id = ?';
+      return db.executeSql(sql, [id])
+        .then((data) => {
+          if (data.rows.length > 0) {
+            const plantData = data.rows.item(0);
+            return createPlant(plantData);
+          }
+          return null;
         });
     });
   }

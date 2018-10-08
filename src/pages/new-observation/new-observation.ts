@@ -16,6 +16,7 @@ import Observation from '../../models/observation/Observation';
 import ImgData from '../../models/image-data/ImgData';
 import Plant from '../../models/plant/Plant';
 import { MapModalPage } from '../map-modal/map-modal';
+import { ViewObservationPage } from '../view-observation/view-observation';
 import { ImageDatabaseProvider } from '../../providers/database/image-database';
 import { MapLocationDatabaseProvider } from '../../providers/database/map-location-database';
 import { ObservationDatabaseProvider } from '../../providers/database/observation-database';
@@ -127,6 +128,10 @@ export class NewObservationPage {
           || (!this.observation.mapLocation.latitude && !this.observation.mapLocation.longitude)) {
         // this.geolocation.getCurrentPosition().then((response) => {
         const latLng = new google.maps.LatLng(61.497, 23.760);
+          // const latLng = new google.maps.LatLng(
+          //   response.coords.latitude,
+          //   response.coords.longitude,
+          // );
         this.createMap(latLng);
         // });
       } else {
@@ -190,7 +195,15 @@ export class NewObservationPage {
 
     this.imageDb.insertImage(this.observation.imageData).then(() => {
       this.mapLocationDb.insertMapLocation(this.observation.mapLocation).then(() => {
-        this.observationDb.insertObservation(this.observation);
+        this.observationDb.insertObservation(this.observation).then(() => {
+          this.observationDb.getObservationById(this.observation.id).then((observation) => {
+            this.navCtrl.pop();
+            this.navCtrl.push(
+              ViewObservationPage,
+              { observation },
+            );
+          });
+        });
       });
     });
   }

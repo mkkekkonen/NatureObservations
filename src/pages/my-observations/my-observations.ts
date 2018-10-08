@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Platform } from 'ionic-angular';
 import { ObservationDatabaseProvider } from '../../providers/database/observation-database';
 import Observation from '../../models/observation/Observation';
+import { ViewObservationPage } from '../../pages/view-observation/view-observation';
 
 @IonicPage()
 @Component({
@@ -23,5 +24,9 @@ export class MyObservationsPage {
         this.observations = observations;
       });
     });
+  }
+
+  viewObservation(observation) {
+    this.navCtrl.push(ViewObservationPage, { observation });
   }
 }
