@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { PlantDatabaseProvider } from '../../providers/database/plant-database';
 import { ImageDatabaseProvider } from '../../providers/database/image-database';
+import { MapLocationDatabaseProvider } from '../../providers/database/map-location-database';
+import { ObservationDatabaseProvider } from '../../providers/database/observation-database';
 
 @IonicPage()
 @Component({
@@ -11,7 +13,9 @@ import { ImageDatabaseProvider } from '../../providers/database/image-database';
 export class DebugPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private plantDb: PlantDatabaseProvider, private imgDb: ImageDatabaseProvider) {
+              private plantDb: PlantDatabaseProvider, private imgDb: ImageDatabaseProvider,
+              private mapLocDb: MapLocationDatabaseProvider,
+              private obsDb: ObservationDatabaseProvider) {
   }
 
   ionViewDidLoad() {
@@ -28,5 +32,11 @@ export class DebugPage {
 
   setLocalStorage() {
     localStorage.setItem('dbversion', '2');
+  }
+
+  deleteData() {
+    this.imgDb.deleteAllImages();
+    this.mapLocDb.deleteMapLocations();
+    this.obsDb.deleteObservations();
   }
 }

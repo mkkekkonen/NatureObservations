@@ -89,4 +89,24 @@ export class ImageDatabaseProvider {
         });
     });
   }
+
+  public updateImage(imageData: ImgData): Promise<void> {
+    if (imageData && imageData.id) {
+      return this.sqlite.create({
+        name: DB_FILE_NAME,
+        location: DB_LOCATION,
+      }).then((db: SQLiteObject) => {
+        let sql = 'UPDATE imgdata\n';
+        sql += 'SET fileuri = ?, debugdatauri = ?\n';
+        sql += 'WHERE id = ?';
+        const valuesArray = [
+          imageData.fileUri || '',
+          imageData.debugDataUri || '',
+          imageData.id,
+        ];
+        return db.executeSql(sql, valuesArray);
+      });
+    }
+    return new Promise(resolve => resolve(null));
+  }
 }

@@ -116,4 +116,39 @@ export class ObservationDatabaseProvider {
         });
     });
   }
+
+  public updateObservation(observation: Observation): Promise<void> {
+    if (observation && observation.id) {
+      return this.sqlite.create({
+        name: DB_FILE_NAME,
+        location: DB_LOCATION,
+      }).then((db: SQLiteObject) => {
+        let sql = 'UPDATE observations\n';
+        sql += 'SET plantid = ?, inputtedname = ?, date = ?,\n';
+        sql += 'maplocationid = ?, description = ?, imageid = ?\n';
+        sql += 'WHERE id = ?';
+        const valuesArray = [
+          (observation.plant && observation.plant.id) || 0,
+          observation.inputtedName || '',
+          moment().format(),
+          (observation.mapLocation && observation.mapLocation.id) || 0,
+          observation.description,
+          (observation.imageData && observation.imageData.id) || 0,
+          observation.id,
+        ];
+        return db.executeSql(sql, valuesArray);
+      });
+    }
+    throw new Error('Invalid data');
+  }
+
+  public deleteObservations() {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      const sql = 'DELETE FROM observations';
+      return db.executeSql(sql, []);
+    });
+  }
 }

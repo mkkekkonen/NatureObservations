@@ -11,6 +11,7 @@
   },
   "NEWOBS": {
     "NEWOBS": "Uusi havainto",
+    "EDITOBS": "Muokkaa havaintoa",
     "TAKEPIC": "Ota kuva",
     "FILE": "Tiedosto",
     "LATINNAME": "Tieteellinen nimi",
@@ -36,6 +37,7 @@
     "READY": "Valmis"
   },
   "MYOBS": {
-    "MYOBS": "Omat havainnot"
+    "MYOBS": "Omat havainnot",
+    "NOOBS": "Ei havaintoja"
   }
 }

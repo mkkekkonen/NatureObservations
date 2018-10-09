@@ -1,6 +1,8 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ModalController } from 'ionic-angular';
 import Observation from '../../models/observation/Observation';
+import { EditObservationPage } from '../edit-observation/edit-observation';
+import { ObservationDatabaseProvider } from '../../providers/database/observation-database';
 
 declare var google;
 
@@ -18,7 +20,9 @@ export class ViewObservationPage {
   map = null; // google.maps.Map
   marker = null; // google.maps.Marker
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              private modalCtrl: ModalController,
+              private observationDb: ObservationDatabaseProvider) {
     this.observation = this.navParams.get('observation');
   }
 
@@ -42,22 +46,55 @@ export class ViewObservationPage {
   }
 
   createMap() {
+    if (this.observation.mapLocation) {
+      const latLng = new google.maps.LatLng(
+        this.observation.mapLocation.latitude,
+        this.observation.mapLocation.longitude,
+      );
+      const mapOptions = {
+        center: latLng,
+        zoom: 15,
+        mapTypeId: 'terrain',
+        gestureHandling: 'none',
+        zoomControl: false,
+        disableDefaultUI: true,
+      };
+      this.map = new google.maps.Map(this.mapDiv.nativeElement, mapOptions);
+      this.marker = new google.maps.Marker({
+        position: latLng,
+        map: this.map,
+      });
+    }
+  }
+
+  setMarkerAndPan() {
+    if (this.marker !== null) {
+      this.marker.setMap(null);
+    }
     const latLng = new google.maps.LatLng(
       this.observation.mapLocation.latitude,
       this.observation.mapLocation.longitude,
     );
-    const mapOptions = {
-      center: latLng,
-      zoom: 15,
-      mapTypeId: 'terrain',
-      gestureHandling: 'none',
-      zoomControl: false,
-      disableDefaultUI: true,
-    };
-    this.map = new google.maps.Map(this.mapDiv.nativeElement, mapOptions);
     this.marker = new google.maps.Marker({
       position: latLng,
       map: this.map,
     });
+    this.map.panTo(this.marker.getPosition());
+  }
+
+  edit() {
+    const editModal = this.modalCtrl.create(
+      EditObservationPage,
+      { isEditModal: true, observation: this.observation },
+    );
+    editModal.onDidDismiss((responseObj) => {
+      if (responseObj && responseObj.observationId) {
+        this.observationDb.getObservationById(responseObj.observationId).then((observation) => {
+          this.observation = observation;
+          this.setMarkerAndPan();
+        });
+      }
+    });
+    editModal.present();
   }
 }

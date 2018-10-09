@@ -7,6 +7,7 @@
 </ion-header>
 
 <ion-content padding>
+  <p *ngIf="observations.length === 0">{{ 'MYOBS.NOOBS' | translate }}</p>
   <ion-list no-lines>
     <ion-item *ngFor="let observation of observations">
       <observation-card

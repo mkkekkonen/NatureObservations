@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, Platform } from 'ionic-angular';
 
-import { NewObservationPage } from '../new-observation/new-observation';
+import { EditObservationPage } from '../edit-observation/edit-observation';
 import { MyObservationsPage } from '../my-observations/my-observations';
 import { DebugPage } from '../debug/debug';
 import { PlantDatabaseProvider } from '../../providers/database/plant-database';
@@ -15,7 +15,7 @@ export class HomePage {
 
   DEBUG = true;
 
-  newObservationPage = NewObservationPage;
+  editObservationPage = EditObservationPage;
   myObservationsPage = MyObservationsPage;
   debugPage = DebugPage;
 

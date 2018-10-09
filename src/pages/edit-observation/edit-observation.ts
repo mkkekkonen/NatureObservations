@@ -6,7 +6,7 @@ import {
   NavParams,
   Platform,
   ModalController,
-  Modal,
+  ViewController,
 } from 'ionic-angular';
 import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FilePath } from '@ionic-native/file-path';
@@ -26,9 +26,9 @@ declare var google;
 @IonicPage()
 @Component({
   selector: 'page-observation',
-  templateUrl: 'new-observation.html',
+  templateUrl: 'edit-observation.html',
 })
-export class NewObservationPage {
+export class EditObservationPage {
 
   @ViewChild('map') mapDiv: ElementRef;
 
@@ -49,7 +49,12 @@ export class NewObservationPage {
               private imageDb: ImageDatabaseProvider,
               private mapLocationDb: MapLocationDatabaseProvider,
               private observationDb: ObservationDatabaseProvider,
-              private translate: TranslateService) {
+              private translate: TranslateService, private viewCtrl: ViewController) {
+    const navParamsObs = this.navParams.get('observation');
+    if (this.navParams.get('isEditModal') && navParamsObs) {
+      this.observation = navParamsObs;
+    }
+
     this.cameraOptions = {
       quality: 100,
       destinationType: this.DEBUG ?
@@ -96,6 +101,13 @@ export class NewObservationPage {
     return this.observation.plant && this.observation.plant.latinName;
   }
 
+  get title() {
+    if (this.observation.id) {
+      return 'NEWOBS.EDITOBS';
+    }
+    return 'NEWOBS.NEWOBS';
+  }
+
   updateInputtedName(name) {
     this.observation.inputtedName = name;
   }
@@ -140,6 +152,7 @@ export class NewObservationPage {
           this.observation.mapLocation.longitude,
         );
         this.createMap(latLng);
+        this.setMarkerAndPan(latLng);
       }
     } catch (err) {
       window.alert(err.message);
@@ -193,18 +206,49 @@ export class NewObservationPage {
       return;
     }
 
-    this.imageDb.insertImage(this.observation.imageData).then(() => {
-      this.mapLocationDb.insertMapLocation(this.observation.mapLocation).then(() => {
-        this.observationDb.insertObservation(this.observation).then(() => {
-          this.observationDb.getObservationById(this.observation.id).then((observation) => {
-            this.navCtrl.pop();
-            this.navCtrl.push(
-              ViewObservationPage,
-              { observation },
-            );
-          });
-        });
-      });
-    });
+    const editingExisting = this.navParams.get('isEditModal');
+    if (!editingExisting) {
+      this.imageDb.insertImage(this.observation.imageData).then(() => {
+        this.mapLocationDb.insertMapLocation(this.observation.mapLocation).then(() => {
+          this.observationDb.insertObservation(this.observation).then(() => {
+            this.observationDb.getObservationById(this.observation.id).then((observation) => {
+              this.navCtrl.pop();
+              this.navCtrl.push(
+                ViewObservationPage,
+                { observation },
+              );
+            }).catch(error => console.log(error.message));
+          }).catch(error => console.log(error.message));
+        }).catch(error => console.log(error.message));
+      }).catch(error => console.log(error.message));
+    } else {
+      this.insertOrUpdateImage().then(() => {
+        this.insertOrUpdateMapLocation().then(() => {
+          this.observationDb.updateObservation(this.observation).then(() => {
+            this.viewCtrl.dismiss({ observationId: this.observation.id });
+          }).catch(error => console.log(error.message));
+        }).catch(error => console.log(error.message));
+      }).catch(error => console.log(error.message));
+    }
+  }
+
+  private insertOrUpdateImage() {
+    if (this.observation.imageData) {
+      if (this.observation.imageData.id) {
+        return this.imageDb.updateImage(this.observation.imageData);
+      }
+      return this.imageDb.insertImage(this.observation.imageData);
+    }
+    return new Promise(resolve => resolve(null));
+  }
+
+  private insertOrUpdateMapLocation() {
+    if (this.observation.mapLocation) {
+      if (this.observation.mapLocation.id) {
+        return this.mapLocationDb.updateMapLocation(this.observation.mapLocation);
+      }
+      return this.mapLocationDb.insertMapLocation(this.observation.mapLocation);
+    }
+    return new Promise(resolve => resolve(null));
   }
 }

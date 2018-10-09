@@ -84,4 +84,35 @@ export class MapLocationDatabaseProvider {
         });
     });
   }
+
+  public updateMapLocation(mapLocation: MapLocation): Promise<void> {
+    if (mapLocation && mapLocation.id) {
+      return this.sqlite.create({
+        name: DB_FILE_NAME,
+        location: DB_LOCATION,
+      }).then((db: SQLiteObject) => {
+        let sql = 'UPDATE maplocations\n';
+        sql += 'SET name = ?, latitude = ?, longitude = ?\n';
+        sql += 'WHERE id = ?';
+        const valuesArray = [
+          mapLocation.name,
+          mapLocation.latitude,
+          mapLocation.longitude,
+          mapLocation.id,
+        ];
+        return db.executeSql(sql, valuesArray);
+      });
+    }
+    return new Promise(resolve => resolve(null));
+  }
+
+  public deleteMapLocations() {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      const sql = 'DELETE FROM imgdata';
+      return db.executeSql(sql, []);
+    });
+  }
 }

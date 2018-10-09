@@ -9,7 +9,7 @@
 <ion-content padding overflow-scroll="true">
   <img *ngIf="imageUrl" [src]="imageUrl" />
 
-  <button ion-button full>{{ 'VIEWOBS.EDIT' | translate }}</button>
+  <button ion-button full (click)="edit()">{{ 'VIEWOBS.EDIT' | translate }}</button>
 
   <ion-list>
     <ion-item-divider>{{ 'VIEWOBS.SPEC' | translate }}</ion-item-divider>
