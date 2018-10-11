@@ -151,4 +151,17 @@ export class ObservationDatabaseProvider {
       return db.executeSql(sql, []);
     });
   }
+
+  public deleteObservation(id: number): Promise<void> {
+    if (id) {
+      return this.sqlite.create({
+        name: DB_FILE_NAME,
+        location: DB_LOCATION,
+      }).then((db: SQLiteObject) => {
+        const sql = 'DELETE FROM observations WHERE id = ?';
+        return db.executeSql(sql, [id]);
+      });
+    }
+    return new Promise(resolve => resolve(null));
+  }
 }

@@ -12,6 +12,7 @@
     <ion-item *ngFor="let observation of observations">
       <observation-card
         [observation]="observation"
+        [deleteObservationCallback]="deleteObservation"
         (click)="viewObservation(observation)"
       ></observation-card>
     </ion-item>

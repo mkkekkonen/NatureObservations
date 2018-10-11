@@ -39,5 +39,8 @@
   "MYOBS": {
     "MYOBS": "Omat havainnot",
     "NOOBS": "Ei havaintoja"
+  },
+  "OBSCARD": {
+    "AREUSURE": "Oletko varma?"
   }
 }

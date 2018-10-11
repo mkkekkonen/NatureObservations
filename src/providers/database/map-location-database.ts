@@ -111,8 +111,21 @@ export class MapLocationDatabaseProvider {
       name: DB_FILE_NAME,
       location: DB_LOCATION,
     }).then((db: SQLiteObject) => {
-      const sql = 'DELETE FROM imgdata';
+      const sql = 'DELETE FROM maplocations';
       return db.executeSql(sql, []);
     });
+  }
+
+  public deleteMapLocation(id: number): Promise<void> {
+    if (id) {
+      return this.sqlite.create({
+        name: DB_FILE_NAME,
+        location: DB_LOCATION,
+      }).then((db: SQLiteObject) => {
+        const sql = 'DELETE FROM maplocations WHERE id = ?';
+        return db.executeSql(sql, [id]);
+      });
+    }
+    return new Promise(resolve => resolve(null));
   }
 }

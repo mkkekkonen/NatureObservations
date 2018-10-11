@@ -109,4 +109,17 @@ export class ImageDatabaseProvider {
     }
     return new Promise(resolve => resolve(null));
   }
+
+  public deleteImage(id: number): Promise<void> {
+    if (id) {
+      return this.sqlite.create({
+        name: DB_FILE_NAME,
+        location: DB_LOCATION,
+      }).then((db: SQLiteObject) => {
+        const sql = 'DELETE FROM imgdata WHERE id = ?';
+        return db.executeSql(sql, [id]);
+      });
+    }
+    return new Promise(resolve => resolve(null));
+  }
 }

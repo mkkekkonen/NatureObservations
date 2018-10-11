@@ -1,6 +1,6 @@
 <ion-card>
   <img *ngIf="observation.imageData" src="{{ observation.imageData.fileUri || observation.imageData.debugDataUri }}" />
-  <ion-card-content>
+  <ion-card-content class="content">
     <ion-card-title>{{ observation.plant.name }}</ion-card-title>
     <p class="latin-name">{{ observation.plant.latinName }}</p>
     <p *ngIf="observation.date">{{ observation.date.format('D.M.YYYY') }}</p>
@@ -9,5 +9,8 @@
     >
       {{ observation.mapLocation.name }}
     </p>
+    <button ion-button color="danger" class="remove-button" (click)="delete($event)">
+      <ion-icon name="trash"></ion-icon>
+    </button>
   </ion-card-content>
 </ion-card>
