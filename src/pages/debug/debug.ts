@@ -30,6 +30,10 @@ export class DebugPage {
     this.imgDb.deleteAllImages();
   }
 
+  setLocalStorage1() {
+    localStorage.setItem('dbversion', '1');
+  }
+
   setLocalStorage() {
     localStorage.setItem('dbversion', '2');
   }

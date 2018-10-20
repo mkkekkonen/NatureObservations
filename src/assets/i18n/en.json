@@ -30,7 +30,14 @@
   },
   "MYOBS": {
     "MYOBS": "My Observations",
-    "NOOBS": "No observations"
+    "NOOBS": "No observations",
+    "SEARCHCR": "Search criteria",
+    "LATINNAME": "Latin name",
+    "SEARCH": "Search",
+    "SHOWALL": "Show all",
+    "RESET": "Reset form",
+    "STARTDATE": "Start date",
+    "ENDDATE": "End date"
   },
   "OBSCARD": {
     "AREUSURE": "Are you sure?"

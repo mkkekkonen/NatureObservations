@@ -30,6 +30,7 @@ export class PlantAutocompleteComponent {
         this.allPlants = plants;
       });
     });
+    this.zeroOutText = this.zeroOutText.bind(this);
   }
 
   handleTextInput(event) {
@@ -53,5 +54,9 @@ export class PlantAutocompleteComponent {
     this.text = plant.name;
     this.setPlantCallback(plant);
     this.showAutocomplete = false;
+  }
+
+  zeroOutText() {
+    this.text = null;
   }
 }

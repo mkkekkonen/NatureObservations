@@ -38,7 +38,14 @@
   },
   "MYOBS": {
     "MYOBS": "Omat havainnot",
-    "NOOBS": "Ei havaintoja"
+    "NOOBS": "Ei havaintoja",
+    "SEARCHCR": "Hakukriteerit",
+    "LATINNAME": "Tieteellinen nimi",
+    "SEARCH": "Hae",
+    "SHOWALL": "Näytä kaikki",
+    "RESET": "Tyhjennä lomake",
+    "STARTDATE": "Alkupvm.",
+    "ENDDATE": "Loppupvm"
   },
   "OBSCARD": {
     "AREUSURE": "Oletko varma?"
