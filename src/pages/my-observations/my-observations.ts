@@ -69,7 +69,6 @@ export class MyObservationsPage {
       this.observationDb.getObservations().then((observations) => {
         this.allObservations = observations;
         this.observations = observations;
-        console.log(JSON.stringify(this.observations));
       });
     });
   }
