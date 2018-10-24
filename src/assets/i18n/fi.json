@@ -40,12 +40,20 @@
     "MYOBS": "Omat havainnot",
     "NOOBS": "Ei havaintoja",
     "SEARCHCR": "Hakukriteerit",
+    "SORTCR": "Järjestys",
     "LATINNAME": "Tieteellinen nimi",
     "SEARCH": "Hae",
     "SHOWALL": "Näytä kaikki",
     "RESET": "Tyhjennä lomake",
     "STARTDATE": "Alkupvm.",
-    "ENDDATE": "Loppupvm"
+    "ENDDATE": "Loppupvm",
+    "SORTBY": "Lajittele",
+    "NAME": "Nimi",
+    "DATE": "Päivämäärä",
+    "ORDER": "Järjestys",
+    "ASCENDING": "Nouseva",
+    "DESCENDING": "Laskeva",
+    "SORT": "Lajittele"
   },
   "OBSCARD": {
     "AREUSURE": "Oletko varma?"

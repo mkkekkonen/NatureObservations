@@ -7,15 +7,15 @@
 </ion-header>
 
 <ion-content padding>
-  <div class="search">
+  <div class="search-sort">
     <button ion-button full color="light" (click)="toggleSearchCriteria()">
       <div class="flex-button">
         <span>&nbsp;</span>
         <span>{{ 'MYOBS.SEARCHCR' | translate }}</span>
-        <ion-icon [name]="searchIcon"></ion-icon>
+        <ion-icon [name]="searchSortIcon"></ion-icon>
       </div>
     </button>
-    <div [hidden]="!searchCriteriaOpen" class="search-criteria">
+    <div [hidden]="!searchCriteriaOpen" class="search-sort-criteria">
       <ion-list>
         <plant-autocomplete [setPlantCallback]="setPlant" #plantAutocomplete></plant-autocomplete>
         <ion-item>
@@ -43,9 +43,38 @@
     </div>
   </div>
 
+  <div class="search-sort">
+    <button ion-button full color="light" (click)="toggleSortCriteria()">
+      <div class="flex-button">
+        <span>&nbsp;</span>
+        <span>{{ 'MYOBS.SORTCR' | translate }}</span>
+        <ion-icon [name]="searchSortIcon"></ion-icon>
+      </div>
+    </button>
+    <div [hidden]="!sortCriteriaOpen" class="search-sort-criteria">
+      <ion-list>
+        <ion-item>
+          <ion-label stacked>{{ 'MYOBS.SORTBY' | translate }}</ion-label>
+          <ion-select [(ngModel)]="sortBy">
+            <ion-option [value]="NAME">{{ 'MYOBS.NAME' | translate }}</ion-option>
+            <ion-option [value]="LATINNAME">{{ 'MYOBS.LATINNAME' | translate }}</ion-option>
+            <ion-option [value]="DATE">{{ 'MYOBS.DATE' | translate }}</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>{{ 'MYOBS.ORDER' | translate }}</ion-label>
+          <ion-select [(ngModel)]="sortOrder">
+            <ion-option [value]="ASC">{{ 'MYOBS.ASCENDING' | translate }}</ion-option>
+            <ion-option [value]="DESC">{{ 'MYOBS.DESCENDING' | translate }}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
   <p *ngIf="observations.length === 0">{{ 'MYOBS.NOOBS' | translate }}</p>
   <ion-list no-lines>
-    <ion-item *ngFor="let observation of observations">
+    <ion-item *ngFor="let observation of sortedObservations">
       <observation-card
         [observation]="observation"
         [deleteObservationCallback]="deleteObservation"

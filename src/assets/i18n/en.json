@@ -32,12 +32,20 @@
     "MYOBS": "My Observations",
     "NOOBS": "No observations",
     "SEARCHCR": "Search criteria",
+    "SORTCR": "Sort order",
     "LATINNAME": "Latin name",
     "SEARCH": "Search",
     "SHOWALL": "Show all",
     "RESET": "Reset form",
     "STARTDATE": "Start date",
-    "ENDDATE": "End date"
+    "ENDDATE": "End date",
+    "SORTBY": "Sort by",
+    "NAME": "Name",
+    "DATE": "Date",
+    "ORDER": "Order",
+    "ASCENDING": "Ascending",
+    "DESCENDING": "Descending",
+    "SORT": "Sort"
   },
   "OBSCARD": {
     "AREUSURE": "Are you sure?"

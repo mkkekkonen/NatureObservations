@@ -5,8 +5,10 @@ import * as moment from 'moment';
 import { ObservationDatabaseProvider } from '../../providers/database/observation-database';
 import Observation from '../../models/observation/Observation';
 import { ViewObservationPage } from '../../pages/view-observation/view-observation';
-import { PlantAutocompleteComponent } from '../../components/plant-autocomplete/plant-autocomplete';
 import Plant from '../../models/plant/Plant';
+import {
+  sortObservations,
+} from '../../services/my-observations/my-observations';
 
 @IonicPage()
 @Component({
@@ -25,7 +27,18 @@ export class MyObservationsPage {
   startDateString: string = null;
   endDateString: string = null;
 
+  // sort constants
+  NAME = 'name';
+  LATINNAME = 'latinName';
+  DATE = 'date';
+  ASC = 'ascending';
+  DESC = 'descending';
+
+  sortBy = this.DATE;
+  sortOrder = this.DESC;
+
   searchCriteriaOpen: boolean = false;
+  sortCriteriaOpen: boolean = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private observationDb: ObservationDatabaseProvider,
@@ -34,7 +47,7 @@ export class MyObservationsPage {
     this.setPlant = this.setPlant.bind(this);
   }
 
-  get searchIcon() {
+  get searchSortIcon() {
     if (this.searchCriteriaOpen) {
       return 'arrow-up';
     }
@@ -45,11 +58,18 @@ export class MyObservationsPage {
     return this.selectedPlant && this.selectedPlant.latinName;
   }
 
+  get sortedObservations() {
+    const observations = [...this.observations];
+    sortObservations(observations, this.sortBy, this.sortOrder);
+    return observations;
+  }
+
   ionViewDidLoad() {
     this.platform.ready().then(() => {
       this.observationDb.getObservations().then((observations) => {
         this.allObservations = observations;
         this.observations = observations;
+        console.log(JSON.stringify(this.observations));
       });
     });
   }
@@ -65,6 +85,10 @@ export class MyObservationsPage {
 
   toggleSearchCriteria() {
     this.searchCriteriaOpen = !this.searchCriteriaOpen;
+  }
+
+  toggleSortCriteria() {
+    this.sortCriteriaOpen = !this.sortCriteriaOpen;
   }
 
   setPlant(plant: Plant) {
