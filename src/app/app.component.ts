@@ -53,7 +53,6 @@ export class MyApp {
         });
 
         this.databaseProvider.createTables();
-        this.databaseProvider.migrate();
       }
     });
   }

@@ -17,25 +17,20 @@ export class DatabaseProvider {
       name: DB_FILE_NAME,
       location: DB_LOCATION,
     }).then((db: SQLiteObject) => {
-      if (!localStorage.getItem('dbversion')) {
-        localStorage.setItem('dbversion', '1');
+      const dbVersion = localStorage.getItem('nobs_dbversion');
+      if (!dbVersion || dbVersion === '') {
+        localStorage.setItem('nobs_dbversion', '1');
 
         db.transaction((tx) => {
-          let plantSql = 'CREATE TABLE IF NOT EXISTS plants\n';
-          plantSql += '(id INTEGER PRIMARY KEY, name TEXT, latinname TEXT, updated TEXT)';
-          tx.executeSql(plantSql, [],
-                        () => console.log('Created plant table'),
-                        (tx, error) => console.log(`Error: ${error.message}`));
-
           let observationSql = 'CREATE TABLE IF NOT EXISTS observations\n';
-          observationSql += '(id INTEGER PRIMARY KEY, plantid INTEGER, inputtedName TEXT, ';
-          observationSql += 'inputtedLatinName TEXT, date TEXT, maplocationid INTEGER, ';
+          observationSql += '(id INTEGER PRIMARY KEY, type INTEGER, ';
+          observationSql += 'date TEXT, maplocationid INTEGER, ';
           observationSql += 'description TEXT, imageid INTEGER)';
           tx.executeSql(observationSql, [],
                         () => console.log('Created observation table'),
                         (tx, error) => console.log(`Error: ${error.message}`));
 
-          let mapLocationSql = 'CREATE TABLE IF NOT EXISTS maplocation\n';
+          let mapLocationSql = 'CREATE TABLE IF NOT EXISTS maplocations\n';
           mapLocationSql += '(id INTEGER PRIMARY KEY, name TEXT, latitude REAL, longitude REAL)';
           tx.executeSql(mapLocationSql, [],
                         () => console.log('Created map location table'),
@@ -51,27 +46,36 @@ export class DatabaseProvider {
     });
   }
 
-  public migrate() {
-    const dbVersion = parseInt(localStorage.getItem('dbversion'), 10);
-    if (dbVersion < 2) {
-      this.migrate1To2();
-    }
-  }
+  public nukeDb() {
+    localStorage.setItem('nobs_dbversion', '');
 
-  private migrate1To2() {
     this.sqlite.create({
       name: DB_FILE_NAME,
       location: DB_LOCATION,
     }).then((db: SQLiteObject) => {
-      const sql = 'ALTER TABLE maplocation RENAME TO maplocations';
       db.transaction((tx) => {
-        tx.executeSql(sql, [],
-                      () => {
-                        console.log('Migrated from 1 to 2');
-                        localStorage.setItem('dbversion', '2');
-                      },
-                      ((tx, error) => console.log(`Error: ${error.message}`)));
+        const plantSql = 'DROP TABLE plants';
+        tx.executeSql(plantSql, [],
+                      () => console.log('Dropped plant table'),
+                      (tx, error) => console.log(`Error: ${error.message}`));
+
+        const observationSql = 'DROP TABLE observations';
+        tx.executeSql(observationSql, [],
+                      () => console.log('Dropped observation table'),
+                      (tx, error) => console.log(`Error: ${error.message}`));
+
+        const mapLocationSql = 'DROP TABLE maplocations';
+        tx.executeSql(mapLocationSql, [],
+                      () => console.log('Dropped map location table'),
+                      (tx, error) => console.log(`Error: ${error.message}`));
+
+        const imgDataSql = 'DROP TABLE imgdata';
+        tx.executeSql(imgDataSql, [],
+                      () => console.log('Dropped image data table'),
+                      (tx, error) => console.log(`Error: ${error.message}`));
       });
+
+      window.alert('Done');
     });
   }
 }
