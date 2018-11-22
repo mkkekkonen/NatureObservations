@@ -4,7 +4,8 @@
     "MYOBS": "My observations",
     "IDGUIDE": "Identification guide",
     "DB": "Database",
-    "DEBUG": "Debug"
+    "DEBUG": "Debug",
+    "CREDITS": "Credits"
   },
   "PAC": {
     "PLANT": "Plant species"
@@ -19,7 +20,9 @@
     "PICKLOC": "Choose a location",
     "DESCR": "Description",
     "SAVE": "Save",
-    "PICKPLT": "No plant species has been chosen!"
+    "PICKPLT": "No plant species has been chosen!",
+    "SELECTTYPE": "Select type",
+    "TYPE": "Tyyppi"
   },
   "MAP": {
     "PICKLOC": "Choose a location",
@@ -45,9 +48,23 @@
     "ORDER": "Order",
     "ASCENDING": "Ascending",
     "DESCENDING": "Descending",
-    "SORT": "Sort"
+    "SORT": "Sort",
+    "SELECTTYPE": "Please select a type!"
   },
   "OBSCARD": {
     "AREUSURE": "Are you sure?"
+  },
+  "OBSTYPE": {
+    "LANDSCAPE": "Landscape",
+    "BIRD": "Bird",
+    "MAMMAL": "Mammal",
+    "FISH": "Fish",
+    "REPTAMPH": "Reptile/amphibian",
+    "BUTTERFLY": "Butterfly",
+    "INSECT": "Insect",
+    "PLANT": "Plant",
+    "MUSHROOM": "Mushroom",
+    "WEATHER": "Weather",
+    "OTHER": "Other"
   }
 }

@@ -4,7 +4,8 @@
     "MYOBS": "Omat havainnot",
     "IDGUIDE": "Määritysopas",
     "DB": "Kasvitietokanta",
-    "DEBUG": "Debug"
+    "DEBUG": "Debug",
+    "CREDITS": "Credits"
   },
   "PAC": {
     "PLANT": "Kasvilaji"
@@ -19,7 +20,9 @@
     "PICKLOC": "Valitse sijainti",
     "DESCR": "Kuvaus",
     "SAVE": "Tallenna",
-    "PICKPLT": "Kasvilajia ei ole valittu!"
+    "PICKPLT": "Kasvilajia ei ole valittu!",
+    "SELECTTYPE": "Valitse tyyppi",
+    "TYPE": "Tyyppi"
   },
   "VIEWOBS": {
     "OBS": "Havainto",
@@ -53,9 +56,23 @@
     "ORDER": "Järjestys",
     "ASCENDING": "Nouseva",
     "DESCENDING": "Laskeva",
-    "SORT": "Lajittele"
+    "SORT": "Lajittele",
+    "SELECTTYPE": "Valitse tyyppi!"
   },
   "OBSCARD": {
     "AREUSURE": "Oletko varma?"
+  },
+  "OBSTYPE": {
+    "LANDSCAPE": "Maisema",
+    "BIRD": "Lintu",
+    "MAMMAL": "Nisäkäs",
+    "FISH": "Kala",
+    "REPTAMPH": "Matelija/sammakkoeläin",
+    "BUTTERFLY": "Perhonen",
+    "INSECT": "Hyönteinen",
+    "PLANT": "Kasvi",
+    "MUSHROOM": "Sieni",
+    "WEATHER": "Sää",
+    "OTHER": "Muu"
   }
 }

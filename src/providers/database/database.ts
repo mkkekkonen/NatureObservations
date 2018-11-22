@@ -23,21 +23,23 @@ export class DatabaseProvider {
 
         db.transaction((tx) => {
           let observationSql = 'CREATE TABLE IF NOT EXISTS observations\n';
-          observationSql += '(id INTEGER PRIMARY KEY, type INTEGER, ';
-          observationSql += 'date TEXT, maplocationid INTEGER, ';
-          observationSql += 'description TEXT, imageid INTEGER)';
+          observationSql += '(id INTEGER PRIMARY KEY, type TEXT, ';
+          observationSql += 'date TEXT, description TEXT)';
           tx.executeSql(observationSql, [],
                         () => console.log('Created observation table'),
                         (tx, error) => console.log(`Error: ${error.message}`));
 
           let mapLocationSql = 'CREATE TABLE IF NOT EXISTS maplocations\n';
-          mapLocationSql += '(id INTEGER PRIMARY KEY, name TEXT, latitude REAL, longitude REAL)';
+          mapLocationSql += '(id INTEGER PRIMARY KEY, name TEXT, ';
+          mapLocationSql += 'latitude REAL, longitude REAL, ';
+          mapLocationSql += 'observation INTEGER REFERENCES observations(id) ON DELETE CASCADE)';
           tx.executeSql(mapLocationSql, [],
                         () => console.log('Created map location table'),
                         (tx, error) => console.log(`Error: ${error.message}`));
 
           let imageSql = 'CREATE TABLE IF NOT EXISTS imgdata\n';
-          imageSql += '(id INTEGER PRIMARY KEY, fileuri TEXT, debugdatauri TEXT)';
+          imageSql += '(id INTEGER PRIMARY KEY, fileuri TEXT, debugdatauri TEXT, ';
+          imageSql += 'observation INTEGER REFERENCES observations(id) ON DELETE CASCADE)';
           tx.executeSql(imageSql, [],
                         () => console.log('Created image table'),
                         (tx, error) => console.log(`Error: ${error.message}`));

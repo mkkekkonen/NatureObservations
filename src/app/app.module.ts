@@ -19,6 +19,8 @@ import { DebugPage } from '../pages/debug/debug';
 import { MapModalPage } from '../pages/map-modal/map-modal';
 import { MyObservationsPage } from '../pages/my-observations/my-observations';
 import { ViewObservationPage } from '../pages/view-observation/view-observation';
+import { ObservationTypeModalPage } from '../pages/observation-type-modal/observation-type-modal';
+import { CreditsPage } from '../pages/credits/credits';
 
 import { MainMenuButtonComponent } from '../components/main-menu-button/main-menu-button';
 import { PlantAutocompleteComponent } from '../components/plant-autocomplete/plant-autocomplete';
@@ -50,6 +52,8 @@ export const createTranslateLoader = (http: HttpClient) =>
     MapModalPage,
     MyObservationsPage,
     ViewObservationPage,
+    ObservationTypeModalPage,
+    CreditsPage,
     MainMenuButtonComponent,
     PlantAutocompleteComponent,
     PlantAutocompleteItemComponent,
@@ -77,6 +81,8 @@ export const createTranslateLoader = (http: HttpClient) =>
     MapModalPage,
     MyObservationsPage,
     ViewObservationPage,
+    ObservationTypeModalPage,
+    CreditsPage,
   ],
   providers: [
     StatusBar,

@@ -12,11 +12,15 @@ import { Camera, CameraOptions } from '@ionic-native/camera';
 import { FilePath } from '@ionic-native/file-path';
 import { Geolocation } from '@ionic-native/geolocation';
 import { TranslateService } from '@ngx-translate/core';
+
 import Observation from '../../models/observation/Observation';
 import ImgData from '../../models/image-data/ImgData';
-import Plant from '../../models/plant/Plant';
+import ObservationType from '../../models/observation-type/ObservationType';
+
+import { ObservationTypeModalPage } from '../observation-type-modal/observation-type-modal';
 import { MapModalPage } from '../map-modal/map-modal';
 import { ViewObservationPage } from '../view-observation/view-observation';
+
 import { ImageDatabaseProvider } from '../../providers/database/image-database';
 import { MapLocationDatabaseProvider } from '../../providers/database/map-location-database';
 import { ObservationDatabaseProvider } from '../../providers/database/observation-database';
@@ -74,9 +78,6 @@ export class EditObservationPage {
       encodingType: this.camera.EncodingType.PNG,
       mediaType: this.camera.MediaType.PICTURE,
     };
-
-    this.setPlant = this.setPlant.bind(this);
-    this.updateInputtedName = this.updateInputtedName.bind(this);
   }
 
   ionViewDidLoad() {
@@ -97,19 +98,11 @@ export class EditObservationPage {
     return 'assets/imgs/default_leaf.jpg';
   }
 
-  get latinName() {
-    return this.observation.plant && this.observation.plant.latinName;
-  }
-
   get title() {
     if (this.observation.id) {
       return 'NEWOBS.EDITOBS';
     }
     return 'NEWOBS.NEWOBS';
-  }
-
-  updateInputtedName(name) {
-    this.observation.inputtedName = name;
   }
 
   takePicture(photoLibrary: boolean) {
@@ -132,6 +125,16 @@ export class EditObservationPage {
 
       }
     });
+  }
+
+  openTypeModal() {
+    const typeModal = this.modalCtrl.create(ObservationTypeModalPage);
+    typeModal.onDidDismiss((responseObj) => {
+      if (responseObj && responseObj.observationType) {
+        this.observation.type = responseObj.observationType;
+      }
+    });
+    typeModal.present();
   }
 
   initMap() {
@@ -196,16 +199,7 @@ export class EditObservationPage {
     mapModal.present();
   }
 
-  setPlant(plant: Plant) {
-    this.observation.plant = plant;
-  }
-
   save() {
-    if (!this.observation.plant || !this.observation.plant.id) {
-      window.alert(this.translate.instant('NEWOBS.PICKPLT'));
-      return;
-    }
-
     const editingExisting = this.navParams.get('isEditModal');
     if (!editingExisting) {
       this.imageDb.insertImage(this.observation.imageData).then(() => {

@@ -24,12 +24,10 @@ export class ObservationDatabaseProvider {
       location: DB_LOCATION,
     }).then((db: SQLiteObject) => {
       let insertObservationSql = 'INSERT INTO observations\n';
-      insertObservationSql += '(plantid, inputtedname, date, ';
+      insertObservationSql += '(date, ';
       insertObservationSql += 'maplocationid, description, imageid)\n';
       insertObservationSql += 'VALUES (?, ?, ?, ?, ?, ?)';
       const valuesArray = [
-        (observation.plant && observation.plant.id) || 0,
-        observation.inputtedName || '',
         (observation.date && observation.date.format()) || moment().format(),
         (observation.mapLocation && observation.mapLocation.id) || 'NULL',
         observation.description,
@@ -66,9 +64,7 @@ export class ObservationDatabaseProvider {
                   const obsData = data.rows.item(i);
                   const observation = new Observation(
                     obsData.id,
-                    plants.find(plant => plant.id === obsData.plantid),
-                    obsData.inputtedname,
-                    '',
+                    null,
                     moment(obsData.date),
                     mapLocations.find(mapLocation => mapLocation.id === obsData.maplocationid),
                     obsData.description,
@@ -100,9 +96,7 @@ export class ObservationDatabaseProvider {
                   return this.imageDb.getImageById(obsData.imageid || 0).then((image) => {
                     return new Observation(
                       obsData.id,
-                      plant,
-                      obsData.inputtedname,
-                      '',
+                      null,
                       moment(obsData.date),
                       mapLocation,
                       obsData.description,
@@ -124,12 +118,10 @@ export class ObservationDatabaseProvider {
         location: DB_LOCATION,
       }).then((db: SQLiteObject) => {
         let sql = 'UPDATE observations\n';
-        sql += 'SET plantid = ?, inputtedname = ?, date = ?,\n';
+        sql += 'SET date = ?,\n';
         sql += 'maplocationid = ?, description = ?, imageid = ?\n';
         sql += 'WHERE id = ?';
         const valuesArray = [
-          (observation.plant && observation.plant.id) || 0,
-          observation.inputtedName || '',
           moment().format(),
           (observation.mapLocation && observation.mapLocation.id) || 0,
           observation.description,

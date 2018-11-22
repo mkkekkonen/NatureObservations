@@ -18,12 +18,22 @@
   </div>
 
   <ion-list>
-    <plant-autocomplete (change)="updateInputtedName($event.target.value)" [setPlantCallback]="setPlant"></plant-autocomplete>
+    <ion-item-divider>{{ 'NEWOBS.DESCR' | translate }}</ion-item-divider>
 
     <ion-item>
-      <ion-label stacked>{{ 'NEWOBS.LATINNAME' | translate }}</ion-label>
-      <ion-input class="italic" [value]="latinName" disabled></ion-input>
+      <ion-label stacked>{{ 'NEWOBS.DESCR' | translate }}</ion-label>
+      <ion-textarea [(ngModel)]="observation.description"></ion-textarea>
     </ion-item>
+
+    <ion-item-divider>{{ 'NEWOBS.TYPE' | translate }}</ion-item-divider>
+
+    <div ion-item>
+      <div class="obs-type" *ngIf="observation.type">
+        <img [src]="observation.type.imageUrl" height="50" />
+        <span class="label">{{ observation.type.translationKey | translate }}</span>
+      </div>
+      <button ion-button full (click)="openTypeModal()">{{ 'NEWOBS.SELECTTYPE' | translate }}</button>
+    </div>
 
     <ion-item-divider>{{ 'NEWOBS.LOCATION' | translate }}</ion-item-divider>
 
@@ -31,14 +41,7 @@
       <div class="map" #map></div>
       <button ion-button full (click)="openMapModal()">{{ 'NEWOBS.PICKLOC' | translate }}</button>
     </div>
-
-    <ion-item-divider>{{ 'NEWOBS.DESCR' | translate }}</ion-item-divider>
-
-    <ion-item>
-      <ion-label stacked>{{ 'NEWOBS.DESCR' | translate }}</ion-label>
-      <ion-textarea [(ngModel)]="observation.description"></ion-textarea>
-    </ion-item>
-  </ion-list>
+    </ion-list>
 
   <button ion-button full (click)="save()">{{ 'NEWOBS.SAVE' | translate }}</button>
 </ion-content>

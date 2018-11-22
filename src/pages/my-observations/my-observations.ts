@@ -97,11 +97,6 @@ export class MyObservationsPage {
   search() {
     let filteredObservations = this.allObservations;
 
-    if (this.selectedPlant && this.selectedPlant.id > 0) {
-      filteredObservations = filteredObservations
-        .filter(observation => observation.plant.id === this.selectedPlant.id);
-    }
-
     if (this.startDateString && this.startDateString.length > 0) {
       const startDate = moment(this.startDateString);
       filteredObservations = filteredObservations

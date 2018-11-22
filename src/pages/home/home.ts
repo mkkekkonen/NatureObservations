@@ -3,6 +3,7 @@ import { NavController, Platform } from 'ionic-angular';
 
 import { EditObservationPage } from '../edit-observation/edit-observation';
 import { MyObservationsPage } from '../my-observations/my-observations';
+import { CreditsPage } from '../credits/credits';
 import { DebugPage } from '../debug/debug';
 import { PlantDatabaseProvider } from '../../providers/database/plant-database';
 import { PlantMiddlewareProvider, parsePlant } from '../../providers/middleware/plant-middleware';
@@ -17,6 +18,7 @@ export class HomePage {
 
   editObservationPage = EditObservationPage;
   myObservationsPage = MyObservationsPage;
+  creditsPage = CreditsPage;
   debugPage = DebugPage;
 
   constructor(public navCtrl: NavController, private plantDb: PlantDatabaseProvider,
