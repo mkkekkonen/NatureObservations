@@ -56,11 +56,6 @@ export class DatabaseProvider {
       location: DB_LOCATION,
     }).then((db: SQLiteObject) => {
       db.transaction((tx) => {
-        const plantSql = 'DROP TABLE plants';
-        tx.executeSql(plantSql, [],
-                      () => console.log('Dropped plant table'),
-                      (tx, error) => console.log(`Error: ${error.message}`));
-
         const observationSql = 'DROP TABLE observations';
         tx.executeSql(observationSql, [],
                       () => console.log('Dropped observation table'),

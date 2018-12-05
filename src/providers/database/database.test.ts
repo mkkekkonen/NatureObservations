@@ -1,7 +1,12 @@
 import * as moment from 'moment';
 
+import observationTypes from '../../assets/json/observation-types';
+import * as typeNames from '../../assets/json/observation-type-names';
+
 import Plant from '../../models/plant/Plant';
 import { formulatePlantSql } from './plant-database';
+import { findObsType } from './observation-database';
+import ObservationType from '../../models/observation-type/ObservationType';
 
 describe('formulatePlantSql', () => {
   it('formulates correct SQL', () => {
@@ -31,5 +36,16 @@ describe('formulatePlantSql', () => {
     };
 
     expect(formulatePlantSql(plants)).toEqual(expected);
+  });
+});
+
+describe('findObsType', () => {
+  it('finds correct observation type', () => {
+    const name = typeNames.LANDSCAPE;
+
+    const typeData = observationTypes.find(data => data.name === name);
+    const type = new ObservationType(name, typeData.icon);
+
+    expect(findObsType(name)).toEqual(type);
   });
 });

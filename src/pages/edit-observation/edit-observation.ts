@@ -207,10 +207,10 @@ export class EditObservationPage {
           this.observationDb.insertObservation(this.observation).then(() => {
             this.observationDb.getObservationById(this.observation.id).then((observation) => {
               this.navCtrl.pop();
-              this.navCtrl.push(
-                ViewObservationPage,
-                { observation },
-              );
+              // this.navCtrl.push(
+              //   ViewObservationPage,
+              //   { observation },
+              // );
             }).catch(error => console.log(error.message));
           }).catch(error => console.log(error.message));
         }).catch(error => console.log(error.message));
