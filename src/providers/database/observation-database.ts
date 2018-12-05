@@ -80,10 +80,10 @@ export class ObservationDatabaseProvider {
                   const observation = new Observation(
                     obsData.id,
                     type,
-                    moment(obsData.date),
-                    mapLocations.find(mapLocation => mapLocation.id === obsData.maplocationid),
                     obsData.description,
-                    images.find(imgData => imgData.id === obsData.imageid),
+                    moment(obsData.date),
+                    mapLocations.find(mapLocation => obsData.id === mapLocation.observationId),
+                    images.find(imgData => obsData.id === imgData.observationId),
                   );
                   observations.push(observation);
                 }
@@ -100,28 +100,26 @@ export class ObservationDatabaseProvider {
       name: DB_FILE_NAME,
       location: DB_LOCATION,
     }).then((db: SQLiteObject) => {
-      const sql = 'SELECT * FROM OBSERVATIONS WHERE id = ?';
+      const sql = 'SELECT * FROM observations WHERE id = ?';
       return db.executeSql(sql, [id])
         .then((data) => {
           if (data.rows.length > 0) {
             const obsData = data.rows.item(0);
-            return this.plantDb.getPlantById(obsData.plantid).then((plant) => {
-              return this.mapLocDb.getMapLocationById(obsData.maplocationid || 0)
-                .then((mapLocation) => {
-                  return this.imageDb.getImageById(obsData.imageid || 0)
-                    .then((image) => {
-                      const type = findObsType(obsData.type);
-                      return new Observation(
-                        obsData.id,
-                        type,
-                        moment(obsData.date),
-                        mapLocation,
-                        obsData.description,
-                        image,
-                      );
-                    });
-                });
-            });
+            return this.mapLocDb.getMapLocationByObsId(obsData.id || 0)
+              .then((mapLocation) => {
+                return this.imageDb.getImageByObsId(obsData.id || 0)
+                  .then((image) => {
+                    const type = findObsType(obsData.type);
+                    return new Observation(
+                      obsData.id,
+                      type,
+                      obsData.description,
+                      moment(obsData.date),
+                      mapLocation,
+                      image,
+                    );
+                  });
+              });
           }
           return null;
         });
@@ -148,7 +146,7 @@ export class ObservationDatabaseProvider {
         return db.executeSql(sql, valuesArray);
       });
     }
-    throw new Error('Invalid data');
+    return new Promise(resolve => resolve(null));
   }
 
   public deleteObservations() {

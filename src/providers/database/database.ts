@@ -32,14 +32,14 @@ export class DatabaseProvider {
           let mapLocationSql = 'CREATE TABLE IF NOT EXISTS maplocations\n';
           mapLocationSql += '(id INTEGER PRIMARY KEY, name TEXT, ';
           mapLocationSql += 'latitude REAL, longitude REAL, ';
-          mapLocationSql += 'observation INTEGER REFERENCES observations(id) ON DELETE CASCADE)';
+          mapLocationSql += 'observationid INTEGER REFERENCES observations(id) ON DELETE CASCADE)';
           tx.executeSql(mapLocationSql, [],
                         () => console.log('Created map location table'),
                         (tx, error) => console.log(`Error: ${error.message}`));
 
           let imageSql = 'CREATE TABLE IF NOT EXISTS imgdata\n';
           imageSql += '(id INTEGER PRIMARY KEY, fileuri TEXT, debugdatauri TEXT, ';
-          imageSql += 'observation INTEGER REFERENCES observations(id) ON DELETE CASCADE)';
+          imageSql += 'observationid INTEGER REFERENCES observations(id) ON DELETE CASCADE)';
           tx.executeSql(imageSql, [],
                         () => console.log('Created image table'),
                         (tx, error) => console.log(`Error: ${error.message}`));
@@ -56,11 +56,6 @@ export class DatabaseProvider {
       location: DB_LOCATION,
     }).then((db: SQLiteObject) => {
       db.transaction((tx) => {
-        const observationSql = 'DROP TABLE observations';
-        tx.executeSql(observationSql, [],
-                      () => console.log('Dropped observation table'),
-                      (tx, error) => console.log(`Error: ${error.message}`));
-
         const mapLocationSql = 'DROP TABLE maplocations';
         tx.executeSql(mapLocationSql, [],
                       () => console.log('Dropped map location table'),
@@ -69,6 +64,11 @@ export class DatabaseProvider {
         const imgDataSql = 'DROP TABLE imgdata';
         tx.executeSql(imgDataSql, [],
                       () => console.log('Dropped image data table'),
+                      (tx, error) => console.log(`Error: ${error.message}`));
+
+        const observationSql = 'DROP TABLE observations';
+        tx.executeSql(observationSql, [],
+                      () => console.log('Dropped observation table'),
                       (tx, error) => console.log(`Error: ${error.message}`));
       });
 

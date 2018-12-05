@@ -114,15 +114,18 @@ export class EditObservationPage {
             if (!this.DEBUG) {
               this.filePath.resolveNativePath(imageUrl)
                 .then((path) => {
-                  this.observation.imageData = new ImgData(path);
+                  this.observation.imageData = new ImgData(null, path);
                 }).catch((error) => {
                   window.alert(error.message);
                 });
             } else {
-              this.observation.imageData = new ImgData(null, `data:image/png;base64,${imageUrl}`);
+              this.observation.imageData = new ImgData(
+                null,
+                null,
+                `data:image/png;base64,${imageUrl}`,
+              );
             }
           });
-
       }
     });
   }
@@ -202,9 +205,17 @@ export class EditObservationPage {
   save() {
     const editingExisting = this.navParams.get('isEditModal');
     if (!editingExisting) {
-      this.imageDb.insertImage(this.observation.imageData).then(() => {
-        this.mapLocationDb.insertMapLocation(this.observation.mapLocation).then(() => {
-          this.observationDb.insertObservation(this.observation).then(() => {
+      this.observationDb.insertObservation(this.observation).then(() => {
+        if (this.observation.imageData) {
+          this.observation.imageData.observationId = this.observation.id;
+        }
+
+        this.imageDb.insertImage(this.observation.imageData).then(() => {
+          if (this.observation.mapLocation) {
+            this.observation.mapLocation.observationId = this.observation.id;
+          }
+
+          this.mapLocationDb.insertMapLocation(this.observation.mapLocation).then(() => {    
             this.observationDb.getObservationById(this.observation.id).then((observation) => {
               this.navCtrl.pop();
               // this.navCtrl.push(
@@ -226,7 +237,7 @@ export class EditObservationPage {
     }
   }
 
-  private insertOrUpdateImage() {
+  private insertOrUpdateImage(): Promise<void> {
     if (this.observation.imageData) {
       if (this.observation.imageData.id) {
         return this.imageDb.updateImage(this.observation.imageData);
@@ -236,7 +247,7 @@ export class EditObservationPage {
     return new Promise(resolve => resolve(null));
   }
 
-  private insertOrUpdateMapLocation() {
+  private insertOrUpdateMapLocation(): Promise<void> {
     if (this.observation.mapLocation) {
       if (this.observation.mapLocation.id) {
         return this.mapLocationDb.updateMapLocation(this.observation.mapLocation);

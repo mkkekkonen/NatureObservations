@@ -5,9 +5,10 @@ import ImgData from '../../models/image-data/ImgData';
 import { DB_FILE_NAME, DB_LOCATION } from './database';
 
 const createImage = imageData => new ImgData(
+  imageData.id,
   imageData.fileuri,
   imageData.debugdatauri,
-  imageData.id,
+  imageData.observationid,
 );
 
 @Injectable()
@@ -17,14 +18,19 @@ export class ImageDatabaseProvider {
     console.log('Hello ImageDatabaseProvider Provider');
   }
 
-  public insertImage(imageData: ImgData): Promise<any> {
+  public insertImage(imageData: ImgData): Promise<void> {
     if (imageData) {
       return this.sqlite.create({
         name: DB_FILE_NAME,
         location: DB_LOCATION,
       }).then((db: SQLiteObject) => {
-        const insertImageSql = 'INSERT INTO imgdata (fileuri, debugdatauri) VALUES (?, ?)';
-        const valueArray = [imageData.fileUri || '', imageData.debugDataUri || ''];
+        let insertImageSql = 'INSERT INTO imgdata (fileuri, debugdatauri, observationid)';
+        insertImageSql += 'VALUES (?, ?, ?)';
+        const valueArray = [
+          imageData.fileUri || '',
+          imageData.debugDataUri || '',
+          imageData.observationId || 0,
+        ];
         return db.transaction((tx) => {
           tx.executeSql(insertImageSql, valueArray,
                         () => console.log('Successfully inserted image'),
@@ -82,8 +88,25 @@ export class ImageDatabaseProvider {
       return db.executeSql(sql, [id])
         .then((data) => {
           if (data.rows.length > 0) {
-            const imgDataDb = data.rows.item(0);
-            return createImage(imgDataDb);
+            const imgDataFromDb = data.rows.item(0);
+            return createImage(imgDataFromDb);
+          }
+          return null;
+        });
+    });
+  }
+
+  public getImageByObsId(obsId: number): Promise<ImgData> {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      const sql = 'SELECT * FROM imgdata WHERE observationid = ?';
+      return db.executeSql(sql, [obsId])
+        .then((data) => {
+          if (data.rows.length > 0) {
+            const imgDataFromDb = data.rows.item(0);
+            return createImage(imgDataFromDb);
           }
           return null;
         });
@@ -98,10 +121,12 @@ export class ImageDatabaseProvider {
       }).then((db: SQLiteObject) => {
         let sql = 'UPDATE imgdata\n';
         sql += 'SET fileuri = ?, debugdatauri = ?\n';
+        sql += 'observationid = ?\n',
         sql += 'WHERE id = ?';
         const valuesArray = [
           imageData.fileUri || '',
           imageData.debugDataUri || '',
+          imageData.observationId || 0,
           imageData.id,
         ];
         return db.executeSql(sql, valuesArray);

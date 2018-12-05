@@ -9,6 +9,7 @@ const createMapLocation = mapLocationData => new MapLocation(
   mapLocationData.name,
   mapLocationData.latitude,
   mapLocationData.longitude,
+  mapLocationData.observationid,
 );
 
 @Injectable()
@@ -24,12 +25,14 @@ export class MapLocationDatabaseProvider {
         name: DB_FILE_NAME,
         location: DB_LOCATION,
       }).then((db: SQLiteObject) => {
-        let insertMapLocationSql = 'INSERT INTO maplocations (name, latitude, longitude)\n';
-        insertMapLocationSql += 'VALUES (?, ?, ?)';
+        let insertMapLocationSql = 'INSERT INTO maplocations\n';
+        insertMapLocationSql += '(name, latitude, longitude, observationid)\n';
+        insertMapLocationSql += 'VALUES (?, ?, ?, ?)';
         const valuesArray = [
           mapLocation.name || '',
           mapLocation.latitude || 0,
           mapLocation.longitude || 0,
+          mapLocation.observationId || 0,
         ];
         return db.transaction((tx) => {
           tx.executeSql(insertMapLocationSql, valuesArray,
@@ -85,6 +88,23 @@ export class MapLocationDatabaseProvider {
     });
   }
 
+  public getMapLocationByObsId(obsId: number): Promise<MapLocation> {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      const sql = 'SELECT * FROM maplocations WHERE observationid = ?';
+      return db.executeSql(sql, [obsId])
+        .then((data) => {
+          if (data.rows.length > 0) {
+            const mapLocData = data.rows.item(0);
+            return createMapLocation(mapLocData);
+          }
+          return null;
+        });
+    });
+  }
+
   public updateMapLocation(mapLocation: MapLocation): Promise<void> {
     if (mapLocation && mapLocation.id) {
       return this.sqlite.create({
@@ -92,12 +112,13 @@ export class MapLocationDatabaseProvider {
         location: DB_LOCATION,
       }).then((db: SQLiteObject) => {
         let sql = 'UPDATE maplocations\n';
-        sql += 'SET name = ?, latitude = ?, longitude = ?\n';
+        sql += 'SET name = ?, latitude = ?, longitude = ?, observationid = ?\n';
         sql += 'WHERE id = ?';
         const valuesArray = [
-          mapLocation.name,
-          mapLocation.latitude,
-          mapLocation.longitude,
+          mapLocation.name || '',
+          mapLocation.latitude || 0,
+          mapLocation.longitude || 0,
+          mapLocation.observationId || 0,
           mapLocation.id,
         ];
         return db.executeSql(sql, valuesArray);
