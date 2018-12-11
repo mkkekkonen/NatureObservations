@@ -21,6 +21,11 @@
     <ion-item-divider>{{ 'NEWOBS.DESCR' | translate }}</ion-item-divider>
 
     <ion-item>
+      <ion-label stacked>{{ 'NEWOBS.TITLE' | translate }}</ion-label>
+      <ion-input type="text" [(ngModel)]="observation.title"></ion-input>
+    </ion-item>
+
+    <ion-item>
       <ion-label stacked>{{ 'NEWOBS.DESCR' | translate }}</ion-label>
       <ion-textarea [(ngModel)]="observation.description"></ion-textarea>
     </ion-item>
@@ -28,10 +33,7 @@
     <ion-item-divider>{{ 'NEWOBS.TYPE' | translate }}</ion-item-divider>
 
     <div ion-item>
-      <div class="obs-type" *ngIf="observation.type">
-        <img [src]="observation.type.imageUrl" height="50" />
-        <span class="label">{{ observation.type.translationKey | translate }}</span>
-      </div>
+      <observation-type-entry *ngIf="observation.type" [observationType]="observation.type"></observation-type-entry>
       <button ion-button full (click)="openTypeModal()">{{ 'NEWOBS.SELECTTYPE' | translate }}</button>
     </div>
 

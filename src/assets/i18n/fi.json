@@ -22,7 +22,8 @@
     "SAVE": "Tallenna",
     "PICKPLT": "Kasvilajia ei ole valittu!",
     "SELECTTYPE": "Valitse tyyppi",
-    "TYPE": "Tyyppi"
+    "TYPE": "Tyyppi",
+    "TITLE": "Otsikko"
   },
   "VIEWOBS": {
     "OBS": "Havainto",

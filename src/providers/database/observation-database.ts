@@ -40,11 +40,12 @@ export class ObservationDatabaseProvider {
       location: DB_LOCATION,
     }).then((db: SQLiteObject) => {
       let insertObservationSql = 'INSERT INTO observations\n';
-      insertObservationSql += '(type, date, description) ';
-      insertObservationSql += 'VALUES (?, ?, ?)';
+      insertObservationSql += '(type, date, title, description) ';
+      insertObservationSql += 'VALUES (?, ?, ?, ?)';
       const valuesArray = [
         (observation.type && observation.type.name),
         (observation.date && observation.date.format()) || moment().format(),
+        observation.title,
         observation.description,
       ];
       return db.transaction((tx) => {
@@ -70,25 +71,24 @@ export class ObservationDatabaseProvider {
       const sql = 'SELECT * FROM observations';
       return db.executeSql(sql, [])
         .then((data) => {
-          return this.plantDb.getPlants().then((plants) => {
-            return this.mapLocDb.getMapLocations().then((mapLocations) => {
-              return this.imageDb.getImages().then((images) => {
-                const observations = [];
-                for (let i = 0; i < data.rows.length; i += 1) {
-                  const obsData = data.rows.item(i);
-                  const type = findObsType(obsData.type);
-                  const observation = new Observation(
-                    obsData.id,
-                    type,
-                    obsData.description,
-                    moment(obsData.date),
-                    mapLocations.find(mapLocation => obsData.id === mapLocation.observationId),
-                    images.find(imgData => obsData.id === imgData.observationId),
-                  );
-                  observations.push(observation);
-                }
-                return observations;
-              });
+          return this.mapLocDb.getMapLocations().then((mapLocations) => {
+            return this.imageDb.getImages().then((images) => {
+              const observations = [];
+              for (let i = 0; i < data.rows.length; i += 1) {
+                const obsData = data.rows.item(i);
+                const type = findObsType(obsData.type);
+                const observation = new Observation(
+                  obsData.id,
+                  type,
+                  obsData.title,
+                  obsData.description,
+                  moment(obsData.date),
+                  mapLocations.find(mapLocation => obsData.id === mapLocation.observationId),
+                  images.find(imgData => obsData.id === imgData.observationId),
+                );
+                observations.push(observation);
+              }
+              return observations;
             });
           });
         });
@@ -113,6 +113,7 @@ export class ObservationDatabaseProvider {
                     return new Observation(
                       obsData.id,
                       type,
+                      obsData.title,
                       obsData.description,
                       moment(obsData.date),
                       mapLocation,
@@ -134,11 +135,12 @@ export class ObservationDatabaseProvider {
       }).then((db: SQLiteObject) => {
         let sql = 'UPDATE observations\n';
         sql += 'SET date = ?, maplocationid = ?,\n';
-        sql += 'description = ?, imageid = ?\n';
+        sql += 'title = ?, description = ?, imageid = ?\n';
         sql += 'WHERE id = ?';
         const valuesArray = [
           moment().format(),
           (observation.mapLocation && observation.mapLocation.id) || 0,
+          observation.title,
           observation.description,
           (observation.imageData && observation.imageData.id) || 0,
           observation.id,

@@ -22,7 +22,8 @@
     "SAVE": "Save",
     "PICKPLT": "No plant species has been chosen!",
     "SELECTTYPE": "Select type",
-    "TYPE": "Tyyppi"
+    "TYPE": "Type",
+    "TITLE": "Title"
   },
   "MAP": {
     "PICKLOC": "Choose a location",

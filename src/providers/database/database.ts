@@ -24,7 +24,7 @@ export class DatabaseProvider {
         db.transaction((tx) => {
           let observationSql = 'CREATE TABLE IF NOT EXISTS observations\n';
           observationSql += '(id INTEGER PRIMARY KEY, type TEXT, ';
-          observationSql += 'date TEXT, description TEXT)';
+          observationSql += 'date TEXT, title TEXT, description TEXT)';
           tx.executeSql(observationSql, [],
                         () => console.log('Created observation table'),
                         (tx, error) => console.log(`Error: ${error.message}`));

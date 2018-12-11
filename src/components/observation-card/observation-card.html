@@ -1,9 +1,10 @@
 <ion-card>
   <img *ngIf="observation.imageData" src="{{ observation.imageData.fileUri || observation.imageData.debugDataUri }}" />
   <ion-card-content class="content">
-    <ion-card-title>{{ observation.plant.name }}</ion-card-title>
-    <p class="latin-name">{{ observation.plant.latinName }}</p>
+    <ion-card-title>{{ observation.title }}</ion-card-title>
+    <p *ngIf="observation.description">{{ observation.description }}</p>
     <p *ngIf="observation.date">{{ observation.date.format('D.M.YYYY') }}</p>
+    <observation-type-entry *ngIf="observation.type" [observationType]="observation.type"></observation-type-entry>
     <p
       *ngIf="observation.mapLocation && observation.mapLocation.name && observation.mapLocation.name.length > 0"
     >

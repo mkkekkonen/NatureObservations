@@ -16,14 +16,10 @@ import {
   templateUrl: 'my-observations.html',
 })
 export class MyObservationsPage {
-
-  @ViewChild('plantAutocomplete') plantAutocomplete: ElementRef;
-
   allObservations: Observation[] = [];
   observations: Observation[] = [];
 
   // search
-  selectedPlant: Plant = null;
   startDateString: string = null;
   endDateString: string = null;
 
@@ -44,7 +40,6 @@ export class MyObservationsPage {
               private observationDb: ObservationDatabaseProvider,
               private platform: Platform) {
     this.deleteObservation = this.deleteObservation.bind(this);
-    this.setPlant = this.setPlant.bind(this);
   }
 
   get searchSortIcon() {
@@ -52,10 +47,6 @@ export class MyObservationsPage {
       return 'arrow-up';
     }
     return 'arrow-down';
-  }
-
-  get latinName() {
-    return this.selectedPlant && this.selectedPlant.latinName;
   }
 
   get sortedObservations() {
@@ -69,7 +60,7 @@ export class MyObservationsPage {
       this.observationDb.getObservations().then((observations) => {
         this.allObservations = observations;
         this.observations = observations;
-      });
+      }).catch(err => window.alert(err.message));
     });
   }
 
@@ -88,10 +79,6 @@ export class MyObservationsPage {
 
   toggleSortCriteria() {
     this.sortCriteriaOpen = !this.sortCriteriaOpen;
-  }
-
-  setPlant(plant: Plant) {
-    this.selectedPlant = plant;
   }
 
   search() {
@@ -117,9 +104,6 @@ export class MyObservationsPage {
   }
 
   resetForm() {
-    const autocompleteComponent = this.plantAutocomplete as any;
-    autocompleteComponent.zeroOutText();
-    this.selectedPlant = null;
     this.startDateString = null;
     this.endDateString = null;
   }

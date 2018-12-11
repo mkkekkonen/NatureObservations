@@ -28,6 +28,9 @@ import {
   PlantAutocompleteItemComponent,
 } from '../components/plant-autocomplete-item/plant-autocomplete-item';
 import { ObservationCardComponent } from '../components/observation-card/observation-card';
+import {
+  ObservationTypeEntryComponent,
+} from '../components/observation-type-entry/observation-type-entry';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -58,6 +61,7 @@ export const createTranslateLoader = (http: HttpClient) =>
     PlantAutocompleteComponent,
     PlantAutocompleteItemComponent,
     ObservationCardComponent,
+    ObservationTypeEntryComponent,
   ],
   imports: [
     BrowserModule,

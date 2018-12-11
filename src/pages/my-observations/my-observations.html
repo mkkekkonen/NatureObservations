@@ -17,11 +17,6 @@
     </button>
     <div [hidden]="!searchCriteriaOpen" class="search-sort-criteria">
       <ion-list>
-        <plant-autocomplete [setPlantCallback]="setPlant" #plantAutocomplete></plant-autocomplete>
-        <ion-item>
-          <ion-label stacked>{{ 'MYOBS.LATINNAME' | translate }}</ion-label>
-          <ion-input class="italic" [value]="latinName" disabled></ion-input>
-        </ion-item>
         <ion-item>
           <ion-label stacked>{{ 'MYOBS.STARTDATE' | translate }}</ion-label>
           <ion-datetime
@@ -56,8 +51,6 @@
         <ion-item>
           <ion-label stacked>{{ 'MYOBS.SORTBY' | translate }}</ion-label>
           <ion-select [(ngModel)]="sortBy">
-            <ion-option [value]="NAME">{{ 'MYOBS.NAME' | translate }}</ion-option>
-            <ion-option [value]="LATINNAME">{{ 'MYOBS.LATINNAME' | translate }}</ion-option>
             <ion-option [value]="DATE">{{ 'MYOBS.DATE' | translate }}</ion-option>
           </ion-select>
         </ion-item>
