@@ -31,7 +31,8 @@
     "SPEC": "Laji",
     "DATE": "Päivämäärä",
     "LOCATION": "Sijainti",
-    "DESCR": "Kuvaus"
+    "DESCR": "Kuvaus",
+    "TYPE": "Tyyppi"
   },
   "MAP": {
     "PICKLOC": "Valitse sijainti",

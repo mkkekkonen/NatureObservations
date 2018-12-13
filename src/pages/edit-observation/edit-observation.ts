@@ -21,6 +21,7 @@ import { ObservationTypeModalPage } from '../observation-type-modal/observation-
 import { MapModalPage } from '../map-modal/map-modal';
 import { ViewObservationPage } from '../view-observation/view-observation';
 
+import { DatabaseProvider } from '../../providers/database/database';
 import { ImageDatabaseProvider } from '../../providers/database/image-database';
 import { MapLocationDatabaseProvider } from '../../providers/database/map-location-database';
 import { ObservationDatabaseProvider } from '../../providers/database/observation-database';
@@ -50,7 +51,7 @@ export class EditObservationPage {
               private camera: Camera, public platform: Platform,
               private filePath: FilePath, private sanitizer: DomSanitizer,
               private geolocation: Geolocation, private modalCtrl: ModalController,
-              private imageDb: ImageDatabaseProvider,
+              private db: DatabaseProvider, private imageDb: ImageDatabaseProvider,
               private mapLocationDb: MapLocationDatabaseProvider,
               private observationDb: ObservationDatabaseProvider,
               private translate: TranslateService, private viewCtrl: ViewController) {
@@ -218,27 +219,30 @@ export class EditObservationPage {
           this.mapLocationDb.insertMapLocation(this.observation.mapLocation).then(() => {    
             this.observationDb.getObservationById(this.observation.id).then((observation) => {
               this.navCtrl.pop();
-              // this.navCtrl.push(
-              //   ViewObservationPage,
-              //   { observation },
-              // );
+              this.navCtrl.push(
+                ViewObservationPage,
+                { observation },
+              );
             }).catch(error => console.log(error.message));
           }).catch(error => console.log(error.message));
         }).catch(error => console.log(error.message));
       }).catch(error => console.log(error.message));
     } else {
-      this.insertOrUpdateImage().then(() => {
-        this.insertOrUpdateMapLocation().then(() => {
-          this.observationDb.updateObservation(this.observation).then(() => {
-            this.viewCtrl.dismiss({ observationId: this.observation.id });
+      this.db.erasePreviousData(this.observation.id).then(() => {
+        this.insertOrUpdateImage().then(() => {
+          this.insertOrUpdateMapLocation().then(() => {
+            this.observationDb.updateObservation(this.observation).then(() => {
+              this.viewCtrl.dismiss({ observationId: this.observation.id });
+            }).catch(error => console.log(error.message));
           }).catch(error => console.log(error.message));
         }).catch(error => console.log(error.message));
-      }).catch(error => console.log(error.message));
+      });
     }
   }
 
   private insertOrUpdateImage(): Promise<void> {
     if (this.observation.imageData) {
+      this.observation.imageData.observationId = this.observation.id;
       if (this.observation.imageData.id) {
         return this.imageDb.updateImage(this.observation.imageData);
       }
@@ -249,6 +253,7 @@ export class EditObservationPage {
 
   private insertOrUpdateMapLocation(): Promise<void> {
     if (this.observation.mapLocation) {
+      this.observation.mapLocation.observationId = this.observation.id;
       if (this.observation.mapLocation.id) {
         return this.mapLocationDb.updateMapLocation(this.observation.mapLocation);
       }

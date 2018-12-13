@@ -75,4 +75,25 @@ export class DatabaseProvider {
       window.alert('Done');
     });
   }
+
+  public erasePreviousData(observationId: number): Promise<void> {
+    return this.sqlite.create({
+      name: DB_FILE_NAME,
+      location: DB_LOCATION,
+    }).then((db: SQLiteObject) => {
+      return db.transaction((tx) => {
+        let mapLocationSql = 'DELETE FROM maplocations\n';
+        mapLocationSql += 'WHERE observationid = ?';
+        tx.executeSql(mapLocationSql, [observationId],
+                      () => console.log('Successfully removed map location'),
+                      (tx, error) => console.log(`Error: ${error.message}`));
+
+        let imageSql = 'DELETE FROM imgdata\n';
+        imageSql += 'WHERE observationid = ?';
+        tx.executeSql(imageSql, [observationId],
+                      () => console.log('Successfully removed image'),
+                      (tx, error) => console.log(`Error: ${error.message}`));
+      });
+    });
+  }
 }

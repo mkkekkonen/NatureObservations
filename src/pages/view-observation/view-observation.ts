@@ -91,7 +91,7 @@ export class ViewObservationPage {
       if (responseObj && responseObj.observationId) {
         this.observationDb.getObservationById(responseObj.observationId).then((observation) => {
           this.observation = observation;
-          this.setMarkerAndPan();
+          this.createMap();
         });
       }
     });

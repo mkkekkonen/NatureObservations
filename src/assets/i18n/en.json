@@ -25,6 +25,15 @@
     "TYPE": "Type",
     "TITLE": "Title"
   },
+  "VIEWOBS": {
+    "OBS": "Observation",
+    "EDIT": "Edit",
+    "SPEC": "Species",
+    "DATE": "Date",
+    "LOCATION": "Location",
+    "DESCR": "Description",
+    "TYPE": "Type"
+  },
   "MAP": {
     "PICKLOC": "Choose a location",
     "LOC": "Location",

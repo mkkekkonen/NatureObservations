@@ -24,7 +24,7 @@ export class ImageDatabaseProvider {
         name: DB_FILE_NAME,
         location: DB_LOCATION,
       }).then((db: SQLiteObject) => {
-        let insertImageSql = 'INSERT INTO imgdata (fileuri, debugdatauri, observationid)';
+        let insertImageSql = 'INSERT INTO imgdata (fileuri, debugdatauri, observationid)\n';
         insertImageSql += 'VALUES (?, ?, ?)';
         const valueArray = [
           imageData.fileUri || '',
@@ -120,7 +120,7 @@ export class ImageDatabaseProvider {
         location: DB_LOCATION,
       }).then((db: SQLiteObject) => {
         let sql = 'UPDATE imgdata\n';
-        sql += 'SET fileuri = ?, debugdatauri = ?\n';
+        sql += 'SET fileuri = ?, debugdatauri = ?,\n';
         sql += 'observationid = ?\n',
         sql += 'WHERE id = ?';
         const valuesArray = [

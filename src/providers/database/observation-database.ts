@@ -134,15 +134,14 @@ export class ObservationDatabaseProvider {
         location: DB_LOCATION,
       }).then((db: SQLiteObject) => {
         let sql = 'UPDATE observations\n';
-        sql += 'SET date = ?, maplocationid = ?,\n';
-        sql += 'title = ?, description = ?, imageid = ?\n';
+        sql += 'SET type = ?, date = ?,\n';
+        sql += 'title = ?, description = ?\n';
         sql += 'WHERE id = ?';
         const valuesArray = [
+          (observation.type && observation.type.name),
           moment().format(),
-          (observation.mapLocation && observation.mapLocation.id) || 0,
           observation.title,
           observation.description,
-          (observation.imageData && observation.imageData.id) || 0,
           observation.id,
         ];
         return db.executeSql(sql, valuesArray);
