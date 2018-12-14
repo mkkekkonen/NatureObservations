@@ -59,9 +59,7 @@
     "ASCENDING": "Nouseva",
     "DESCENDING": "Laskeva",
     "SORT": "Lajittele",
-    "SELECTTYPE": "Valitse tyyppi!"
-  },
-  "OBSCARD": {
+    "SELECTTYPE": "Valitse tyyppi!",
     "AREUSURE": "Oletko varma?"
   },
   "OBSTYPE": {

@@ -59,9 +59,7 @@
     "ASCENDING": "Ascending",
     "DESCENDING": "Descending",
     "SORT": "Sort",
-    "SELECTTYPE": "Please select a type!"
-  },
-  "OBSCARD": {
+    "SELECTTYPE": "Please select a type!",
     "AREUSURE": "Are you sure?"
   },
   "OBSTYPE": {

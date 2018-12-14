@@ -3,6 +3,8 @@ import { IonicPage, NavController, NavParams, Platform, DateTime } from 'ionic-a
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { ObservationDatabaseProvider } from '../../providers/database/observation-database';
+import { ImageDatabaseProvider } from '../../providers/database/image-database';
+import { MapLocationDatabaseProvider } from '../../providers/database/map-location-database';
 import Observation from '../../models/observation/Observation';
 import { ViewObservationPage } from '../../pages/view-observation/view-observation';
 import Plant from '../../models/plant/Plant';
@@ -38,7 +40,8 @@ export class MyObservationsPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private observationDb: ObservationDatabaseProvider,
-              private platform: Platform) {
+              private platform: Platform, private imgDb: ImageDatabaseProvider,
+              private mapLocDb: MapLocationDatabaseProvider, private translate: TranslateService) {
     this.deleteObservation = this.deleteObservation.bind(this);
   }
 
@@ -70,7 +73,16 @@ export class MyObservationsPage {
 
   deleteObservation(id: number) {
     const observationIndex = this.observations.findIndex(observation => observation.id === id);
-    this.observations.splice(observationIndex, 1);
+    const observation = this.observations.find(observation => observation.id === id);
+    if (confirm(this.translate.instant('MYOBS.AREUSURE'))) {
+      this.deleteImage(observation).then(() => {
+        this.deleteMapLocation(observation).then(() => {
+          this.observationDb.deleteObservation(observation.id).then(() => {
+            this.observations.splice(observationIndex, 1);
+          });
+        });
+      });
+    }
   }
 
   toggleSearchCriteria() {
@@ -106,5 +118,19 @@ export class MyObservationsPage {
   resetForm() {
     this.startDateString = null;
     this.endDateString = null;
+  }
+
+  private deleteImage(observation: Observation): Promise<void> {
+    if (observation && observation.imageData && observation.imageData.id) {
+      return this.imgDb.deleteImage(observation.imageData.id);
+    }
+    return new Promise(resolve => resolve(null));
+  }
+
+  private deleteMapLocation(observation: Observation): Promise<void> {
+    if (observation && observation.mapLocation && observation.mapLocation.id) {
+      return this.mapLocDb.deleteMapLocation(observation.mapLocation.id);
+    }
+    return new Promise(resolve => resolve(null));
   }
 }
