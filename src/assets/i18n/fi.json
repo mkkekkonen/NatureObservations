@@ -60,7 +60,9 @@
     "DESCENDING": "Laskeva",
     "SORT": "Lajittele",
     "SELECTTYPE": "Valitse tyyppi!",
-    "AREUSURE": "Oletko varma?"
+    "AREUSURE": "Oletko varma?",
+    "TITLE": "Otsikko",
+    "TYPE": "Tyyppi"
   },
   "OBSTYPE": {
     "LANDSCAPE": "Maisema",

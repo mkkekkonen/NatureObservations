@@ -2,8 +2,8 @@ import * as moment from 'moment';
 import { get } from 'lodash';
 import Observation from '../../models/observation/Observation';
 
-export const NAME = 'name';
-export const LATINNAME = 'latinName';
+export const TITLE = 'title';
+export const TYPE = 'type';
 export const DATE = 'date';
 export const ASC = 'ascending';
 export const DESC = 'descending';
@@ -13,11 +13,11 @@ export const sortObservations = (
 ) => {
   let propertyKey;
   switch (sortBy) {
-    case NAME:
-      propertyKey = 'plant.name';
+    case TITLE:
+      propertyKey = 'title';
       break;
-    case LATINNAME:
-      propertyKey = 'plant.latinName';
+    case TYPE:
+      propertyKey = 'type.name';
       break;
     case DATE:
     default:
@@ -32,7 +32,7 @@ export const sortObservations = (
       return 0;
     }
 
-    if (sortBy === NAME || sortBy === LATINNAME) {
+    if (sortBy === TITLE || sortBy === TYPE) {
       const aString = comparedPropertyA as string;
       const bString = comparedPropertyB as string;
       return aString.localeCompare(bString);

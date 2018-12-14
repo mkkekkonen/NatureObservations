@@ -17,6 +17,10 @@
     </button>
     <div [hidden]="!searchCriteriaOpen" class="search-sort-criteria">
       <ion-list>
+        <div ion-item>
+          <observation-type-entry *ngIf="observationType" [observationType]="observationType"></observation-type-entry>
+          <button ion-button full (click)="openTypeModal()">{{ 'NEWOBS.SELECTTYPE' | translate }}</button>
+        </div>
         <ion-item>
           <ion-label stacked>{{ 'MYOBS.STARTDATE' | translate }}</ion-label>
           <ion-datetime
@@ -51,6 +55,8 @@
         <ion-item>
           <ion-label stacked>{{ 'MYOBS.SORTBY' | translate }}</ion-label>
           <ion-select [(ngModel)]="sortBy">
+            <ion-option [value]="TITLE">{{ 'MYOBS.TITLE' | translate }}</ion-option>
+            <ion-option [value]="TYPE">{{ 'MYOBS.TYPE' | translate }}</ion-option>
             <ion-option [value]="DATE">{{ 'MYOBS.DATE' | translate }}</ion-option>
           </ion-select>
         </ion-item>

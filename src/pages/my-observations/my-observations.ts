@@ -1,12 +1,18 @@
 import { Component, ViewChild, ElementRef } from '@angular/core';
-import { IonicPage, NavController, NavParams, Platform, DateTime } from 'ionic-angular';
+import {
+  IonicPage, NavController, NavParams, Platform, DateTime, ModalController,
+} from 'ionic-angular';
 import { TranslateService } from '@ngx-translate/core';
 import * as moment from 'moment';
 import { ObservationDatabaseProvider } from '../../providers/database/observation-database';
 import { ImageDatabaseProvider } from '../../providers/database/image-database';
 import { MapLocationDatabaseProvider } from '../../providers/database/map-location-database';
 import Observation from '../../models/observation/Observation';
+import ObservationType from '../../models/observation-type/ObservationType';
 import { ViewObservationPage } from '../../pages/view-observation/view-observation';
+import {
+  ObservationTypeModalPage,
+} from '../../pages/observation-type-modal/observation-type-modal';
 import Plant from '../../models/plant/Plant';
 import {
   sortObservations,
@@ -22,12 +28,13 @@ export class MyObservationsPage {
   observations: Observation[] = [];
 
   // search
+  observationType: ObservationType = null;
   startDateString: string = null;
   endDateString: string = null;
 
   // sort constants
-  NAME = 'name';
-  LATINNAME = 'latinName';
+  TITLE = 'title';
+  TYPE = 'type';
   DATE = 'date';
   ASC = 'ascending';
   DESC = 'descending';
@@ -41,7 +48,8 @@ export class MyObservationsPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private observationDb: ObservationDatabaseProvider,
               private platform: Platform, private imgDb: ImageDatabaseProvider,
-              private mapLocDb: MapLocationDatabaseProvider, private translate: TranslateService) {
+              private mapLocDb: MapLocationDatabaseProvider, private translate: TranslateService,
+              private modalCtrl: ModalController) {
     this.deleteObservation = this.deleteObservation.bind(this);
   }
 
@@ -56,6 +64,16 @@ export class MyObservationsPage {
     const observations = [...this.observations];
     sortObservations(observations, this.sortBy, this.sortOrder);
     return observations;
+  }
+
+  openTypeModal() {
+    const typeModal = this.modalCtrl.create(ObservationTypeModalPage);
+    typeModal.onDidDismiss((responseObj) => {
+      if (responseObj && responseObj.observationType) {
+        this.observationType = responseObj.observationType;
+      }
+    });
+    typeModal.present();
   }
 
   ionViewDidLoad() {
@@ -95,6 +113,11 @@ export class MyObservationsPage {
 
   search() {
     let filteredObservations = this.allObservations;
+
+    if (this.observationType) {
+      filteredObservations = filteredObservations
+        .filter(observation => observation.type.name === this.observationType.name);
+    }
 
     if (this.startDateString && this.startDateString.length > 0) {
       const startDate = moment(this.startDateString);

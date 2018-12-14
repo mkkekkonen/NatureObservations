@@ -60,7 +60,9 @@
     "DESCENDING": "Descending",
     "SORT": "Sort",
     "SELECTTYPE": "Please select a type!",
-    "AREUSURE": "Are you sure?"
+    "AREUSURE": "Are you sure?",
+    "TITLE": "Otsikko",
+    "TYPE": "Tyyppi"
   },
   "OBSTYPE": {
     "LANDSCAPE": "Landscape",
