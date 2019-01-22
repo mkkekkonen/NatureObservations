@@ -9,7 +9,7 @@ available in mobile app stores.
 
 **Main Menu**
 
-![Main menu](http://i68.tinypic.com/15xafqu.png =350)
+![Main menu](http://i68.tinypic.com/15xafqu.png)
 
 **Adding an Observation**
 
