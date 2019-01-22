@@ -1,12 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
-/**
- * Generated class for the MainMenuButtonComponent component.
- *
- * See https://angular.io/api/core/Component for more info on Angular
- * Components.
- */
 @Component({
   selector: 'main-menu-button',
   templateUrl: 'main-menu-button.html',
@@ -21,7 +15,6 @@ export class MainMenuButtonComponent {
   iconName: string;
 
   constructor(public navCtrl: NavController) {
-
   }
 
   ngAfterViewInit() {

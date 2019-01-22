@@ -25,10 +25,21 @@ page-observation {
 
         img {
             display: block;
+            margin: 0 auto;
         }
+    }
+
+    .img-button-container {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
     }
 
     .italic {
         font-style: italic;
+    }
+
+    .map {
+        height: 200px;
     }
 }

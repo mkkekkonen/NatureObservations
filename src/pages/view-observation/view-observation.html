@@ -1,0 +1,36 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'VIEWOBS.OBS' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding overflow-scroll="true">
+  <div class="flex">
+    <img *ngIf="imageUrl" [src]="imageUrl" />
+  </div>
+
+  <button ion-button full (click)="edit()">{{ 'VIEWOBS.EDIT' | translate }}</button>
+
+  <ion-list>
+    <ion-item-divider>{{ 'VIEWOBS.DESCR' | translate }}</ion-item-divider>
+    <ion-item>
+      <h2>{{ observation.title }}</h2>
+    </ion-item>
+    <ion-item *ngIf="hasDescription">{{ observation.description }}</ion-item>
+  
+    <ion-item-divider *ngIf="observation.type">{{ 'VIEWOBS.TYPE' | translate }}</ion-item-divider>
+    <div ion-item *ngIf="observation.type">
+      <observation-type-entry [observationType]="observation.type"></observation-type-entry>
+    </div>
+
+    <ion-item-divider>{{ 'VIEWOBS.DATE' | translate }}</ion-item-divider>
+    <ion-item>{{ dateString }}</ion-item>
+
+    <ion-item-divider *ngIf="observation.mapLocation">{{ 'VIEWOBS.LOCATION' | translate }}</ion-item-divider>
+    <div *ngIf="observation.mapLocation" ion-item>
+      <div class="map" #map></div>
+    </div>
+  </ion-list>
+</ion-content>

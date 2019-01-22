@@ -8,8 +8,8 @@
 </ion-header>
 
 <ion-content padding>
-  <main-menu-button text="Uusi havainto" iconName="add-circle" [page]="newObservationPage"></main-menu-button>
-  <main-menu-button text="Omat havainnot" iconName="leaf"></main-menu-button>
-  <main-menu-button text="Määritysopas" iconName="help"></main-menu-button>
-  <main-menu-button text="Kasvitietokanta" iconName="book"></main-menu-button>
+  <main-menu-button text="HOME.NEWOBS" iconName="add-circle" [page]="editObservationPage"></main-menu-button>
+  <main-menu-button text="HOME.MYOBS" iconName="leaf" [page]="myObservationsPage"></main-menu-button>
+  <main-menu-button text="HOME.CREDITS" iconName="link" [page]="creditsPage"></main-menu-button>
+  <main-menu-button text="HOME.DEBUG" iconName="bug" [page]="debugPage" *ngIf="DEBUG"></main-menu-button>
 </ion-content>

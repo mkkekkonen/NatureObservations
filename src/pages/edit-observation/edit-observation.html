@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{ title | translate }}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content overflow-scroll="true">
+  <div class="image-container">
+    <div class="image-overlay" *ngIf="!observation.imageData">
+      <ion-icon name="image"></ion-icon>
+    </div>
+    <img [src]="imageUrl" />
+  </div>
+
+  <div class="img-button-container">
+    <button ion-button (click)="takePicture()">{{ 'NEWOBS.TAKEPIC' | translate }}</button>
+    <button ion-button (click)="takePicture(true)">{{ 'NEWOBS.FILE' | translate }}</button>
+  </div>
+
+  <ion-list>
+    <ion-item-divider>{{ 'NEWOBS.DESCR' | translate }}</ion-item-divider>
+
+    <ion-item>
+      <ion-label stacked>{{ 'NEWOBS.TITLE' | translate }}</ion-label>
+      <ion-input type="text" [(ngModel)]="observation.title"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label stacked>{{ 'NEWOBS.DESCR' | translate }}</ion-label>
+      <ion-textarea [(ngModel)]="observation.description"></ion-textarea>
+    </ion-item>
+
+    <ion-item-divider>{{ 'NEWOBS.TYPE' | translate }}</ion-item-divider>
+
+    <div ion-item>
+      <observation-type-entry *ngIf="observation.type" [observationType]="observation.type"></observation-type-entry>
+      <button ion-button full (click)="openTypeModal()">{{ 'NEWOBS.SELECTTYPE' | translate }}</button>
+    </div>
+
+    <ion-item-divider>{{ 'NEWOBS.LOCATION' | translate }}</ion-item-divider>
+
+    <div ion-item>
+      <div class="map" #map></div>
+      <button ion-button full (click)="openMapModal()">{{ 'NEWOBS.PICKLOC' | translate }}</button>
+    </div>
+    </ion-list>
+
+  <button ion-button full (click)="save()">{{ 'NEWOBS.SAVE' | translate }}</button>
+</ion-content>

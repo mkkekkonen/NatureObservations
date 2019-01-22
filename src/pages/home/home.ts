@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, Platform } from 'ionic-angular';
 
-import { MainMenuButtonComponent } from '../../components/main-menu-button/main-menu-button';
-import { NewObservationPage } from '../new-observation/new-observation';
+import { EditObservationPage } from '../edit-observation/edit-observation';
+import { MyObservationsPage } from '../my-observations/my-observations';
+import { CreditsPage } from '../credits/credits';
+import { DebugPage } from '../debug/debug';
+import { PlantDatabaseProvider } from '../../providers/database/plant-database';
+import { PlantMiddlewareProvider, parsePlant } from '../../providers/middleware/plant-middleware';
 
 @Component({
   selector: 'page-home',
@@ -10,10 +14,25 @@ import { NewObservationPage } from '../new-observation/new-observation';
 })
 export class HomePage {
 
-  newObservationPage = NewObservationPage;
+  DEBUG = true;
 
-  constructor(public navCtrl: NavController) {
+  editObservationPage = EditObservationPage;
+  myObservationsPage = MyObservationsPage;
+  creditsPage = CreditsPage;
+  debugPage = DebugPage;
 
+  constructor(public navCtrl: NavController, private plantDb: PlantDatabaseProvider,
+              private plantMiddleware: PlantMiddlewareProvider, private platform: Platform) {
   }
 
+  ionViewDidEnter() {
+    this.plantMiddleware.getPlants().subscribe(
+      (plants) => {
+        this.platform.ready().then(() => {
+          this.plantDb.updatePlants(plants.map(plant => parsePlant(plant)));
+        });
+      },
+      (error) => { console.log(JSON.stringify(error)); },
+    );
+  }
 }
