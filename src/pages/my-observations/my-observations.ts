@@ -13,7 +13,7 @@ import { ViewObservationPage } from '../../pages/view-observation/view-observati
 import {
   ObservationTypeModalPage,
 } from '../../pages/observation-type-modal/observation-type-modal';
-import Plant from '../../models/plant/Plant';
+import { EditObservationPage } from '../../pages/edit-observation/edit-observation';
 import {
   sortObservations,
 } from '../../services/my-observations/my-observations';
@@ -51,6 +51,10 @@ export class MyObservationsPage {
               private mapLocDb: MapLocationDatabaseProvider, private translate: TranslateService,
               private modalCtrl: ModalController) {
     this.deleteObservation = this.deleteObservation.bind(this);
+  }
+
+  newObs() {
+    this.navCtrl.push(EditObservationPage);
   }
 
   get searchSortIcon() {

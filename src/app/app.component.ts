@@ -6,7 +6,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { Globalization } from '@ionic-native/globalization';
 
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { MyObservationsPage } from '../pages/my-observations/my-observations';
+import { EditObservationPage } from '../pages/edit-observation/edit-observation';
+import { CreditsPage } from '../pages/credits/credits';
+import { DebugPage } from '../pages/debug/debug';
+
 import * as constants from '../constants/constants';
 import { DatabaseProvider } from '../providers/database/database';
 
@@ -16,9 +20,9 @@ import { DatabaseProvider } from '../providers/database/database';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = HomePage;
+  rootPage: any = MyObservationsPage;
 
-  pages: {title: string, component: any}[];
+  pages: { name: string, component: any }[];
 
   constructor(public platform: Platform, public statusBar: StatusBar,
               public splashScreen: SplashScreen, private translateService: TranslateService,
@@ -27,8 +31,10 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Home', component: HomePage },
-      { title: 'List', component: ListPage },
+      { name: 'APP.HOME', component: MyObservationsPage },
+      { name: 'APP.NEWOBS', component: EditObservationPage },
+      { name: 'APP.CREDITS', component: CreditsPage },
+      { name: 'APP.DEBUG', component: DebugPage },
     ];
 
   }
@@ -65,6 +71,6 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page.component);
+    this.nav.push(page.component);
   }
 }

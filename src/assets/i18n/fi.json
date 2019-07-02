@@ -1,5 +1,12 @@
 {
+  "APP": {
+    "HOME": "Alkuun",
+    "NEWOBS": "Uusi havainto",
+    "CREDITS": "Credits",
+    "DEBUG": "Debug"
+  },
   "HOME": {
+    "NOBS": "Luontohavainnot",
     "NEWOBS": "Uusi havainto",
     "MYOBS": "Omat havainnot",
     "IDGUIDE": "Määritysopas",
