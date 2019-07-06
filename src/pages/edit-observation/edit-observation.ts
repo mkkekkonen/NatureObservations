@@ -28,6 +28,10 @@ import { ObservationDatabaseProvider } from '../../providers/database/observatio
 
 declare var google;
 
+declare var L;
+
+const INITIAL_ZOOM_LEVEL = 15;
+
 @IonicPage()
 @Component({
   selector: 'page-observation',
@@ -44,8 +48,11 @@ export class EditObservationPage {
   cameraOptions: CameraOptions = null;
   photoLibraryOptions: CameraOptions = null;
 
-  map = null; // google.maps.Map
-  marker = null; // google.maps.Marker
+  // map = null; // google.maps.Map
+  // marker = null; // google.maps.Marker
+
+  map = null; // L.Map
+  marker = null; // L.Marker
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private camera: Camera, public platform: Platform,
@@ -83,7 +90,8 @@ export class EditObservationPage {
 
   ionViewDidLoad() {
     this.platform.ready().then(() => {
-      this.mapDiv && this.initMap();
+      // this.mapDiv && this.initMap();
+      this.initLeafletMap();
     });
   }
 
@@ -140,6 +148,8 @@ export class EditObservationPage {
     });
     typeModal.present();
   }
+
+  // GOOGLE - NOT USED
 
   initMap() {
     try {
@@ -203,6 +213,21 @@ export class EditObservationPage {
     mapModal.present();
   }
 
+  // GOOGLE - NOT USED ENDS
+
+  initLeafletMap() {
+    // this.geolocation.getCurrentPosition().then((response) => {
+    //   const latLng = [response.coords.latitude, response.coords.longitude];
+    const latLng = [61.497, 23.760];
+    this.createLeafletMap(latLng);
+    // });
+  }
+
+  createLeafletMap(latLng: number[]) {
+    this.map = L.map('map').setView(latLng, INITIAL_ZOOM_LEVEL);
+    L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(this.map);
+  }
+
   save() {
     const editingExisting = this.navParams.get('isEditModal');
     if (!editingExisting) {
@@ -216,7 +241,7 @@ export class EditObservationPage {
             this.observation.mapLocation.observationId = this.observation.id;
           }
 
-          this.mapLocationDb.insertMapLocation(this.observation.mapLocation).then(() => {    
+          this.mapLocationDb.insertMapLocation(this.observation.mapLocation).then(() => {
             this.observationDb.getObservationById(this.observation.id).then((observation) => {
               this.navCtrl.pop();
               this.navCtrl.push(
