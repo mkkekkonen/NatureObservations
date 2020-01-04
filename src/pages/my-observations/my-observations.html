@@ -1,0 +1,84 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'MYOBS.MYOBS' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <div class="search-sort">
+    <button ion-button full color="light" (click)="toggleSearchCriteria()">
+      <div class="flex-button">
+        <span>&nbsp;</span>
+        <span>{{ 'MYOBS.SEARCHCR' | translate }}</span>
+        <ion-icon [name]="searchSortIcon"></ion-icon>
+      </div>
+    </button>
+    <div [hidden]="!searchCriteriaOpen" class="search-sort-criteria">
+      <ion-list>
+        <div ion-item>
+          <observation-type-entry *ngIf="observationType" [observationType]="observationType"></observation-type-entry>
+          <button ion-button full (click)="openTypeModal()">{{ 'NEWOBS.SELECTTYPE' | translate }}</button>
+        </div>
+        <ion-item>
+          <ion-label stacked>{{ 'MYOBS.STARTDATE' | translate }}</ion-label>
+          <ion-datetime
+            displayFormat="D.M.YYYY HH:mm"
+            [(ngModel)]="startDateString"
+          ></ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>{{ 'MYOBS.ENDDATE' | translate }}</ion-label>
+          <ion-datetime
+            displayFormat="D.M.YYYY HH:mm"
+            [(ngModel)]="endDateString"
+          ></ion-datetime>
+        </ion-item>
+        <button ion-button full (click)="search()">{{ 'MYOBS.SEARCH' | translate }}</button>
+        <button ion-button full (click)="showAll()">{{ 'MYOBS.SHOWALL' | translate }}</button>
+        <button ion-button full (click)="resetForm()">{{ 'MYOBS.RESET' | translate }}</button>
+      </ion-list>
+    </div>
+  </div>
+
+  <div class="search-sort">
+    <button ion-button full color="light" (click)="toggleSortCriteria()">
+      <div class="flex-button">
+        <span>&nbsp;</span>
+        <span>{{ 'MYOBS.SORTCR' | translate }}</span>
+        <ion-icon [name]="searchSortIcon"></ion-icon>
+      </div>
+    </button>
+    <div [hidden]="!sortCriteriaOpen" class="search-sort-criteria">
+      <ion-list>
+        <ion-item>
+          <ion-label stacked>{{ 'MYOBS.SORTBY' | translate }}</ion-label>
+          <ion-select [(ngModel)]="sortBy">
+            <ion-option [value]="TITLE">{{ 'MYOBS.TITLE' | translate }}</ion-option>
+            <ion-option [value]="TYPE">{{ 'MYOBS.TYPE' | translate }}</ion-option>
+            <ion-option [value]="DATE">{{ 'MYOBS.DATE' | translate }}</ion-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label stacked>{{ 'MYOBS.ORDER' | translate }}</ion-label>
+          <ion-select [(ngModel)]="sortOrder">
+            <ion-option [value]="ASC">{{ 'MYOBS.ASCENDING' | translate }}</ion-option>
+            <ion-option [value]="DESC">{{ 'MYOBS.DESCENDING' | translate }}</ion-option>
+          </ion-select>
+        </ion-item>
+      </ion-list>
+    </div>
+  </div>
+
+  <p *ngIf="observations.length === 0">{{ 'MYOBS.NOOBS' | translate }}</p>
+  <ion-list no-lines>
+    <ion-item *ngFor="let observation of sortedObservations">
+      <observation-card
+        [observation]="observation"
+        [deleteObservationCallback]="deleteObservation"
+        (click)="viewObservation(observation)"
+      ></observation-card>
+    </ion-item>
+  </ion-list>
+</ion-content>

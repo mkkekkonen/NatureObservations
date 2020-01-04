@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS plants
+(id INTEGER PRIMARY KEY, name TEXT, latinname TEXT, updated TEXT)
+
+CREATE TABLE IF NOT EXISTS observations
+(id INTEGER PRIMARY KEY, plantid INTEGER, inputtedName TEXT,
+inputtedLatinName TEXT, date TEXT, maplocationid INTEGER,
+description TEXT, imageid INTEGER)
+
+CREATE TABLE IF NOT EXISTS maplocation
+(id INTEGER PRIMARY KEY, name TEXT, latitude REAL, longitude REAL)
+
+CREATE TABLE IF NOT EXISTS imgdata
+(id INTEGER PRIMARY KEY, fileuri TEXT, debugdatauri TEXT)

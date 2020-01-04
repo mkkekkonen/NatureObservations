@@ -1,0 +1,21 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{ 'MAP.PICKLOC' | translate }}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content padding>
+  <ion-searchbar placeholder="{{ 'MAP.LOC' | translate }}" #placesearch></ion-searchbar>
+
+  <div class="center">
+    <button ion-button (click)="getMyLocation()">{{ 'MAP.MYLOC' | translate }}</button>
+  </div>
+
+  <p>{{ 'MAP.CLICKMAP' | translate }}</p>
+
+  <div class="map" #map></div>
+
+  <button ion-button full (click)="goBack()">{{ 'MAP.READY' | translate }}</button>
+</ion-content>

@@ -1,0 +1,12 @@
+plant-autocomplete-item {
+
+  .flexbox {
+    border-bottom: 1px solid #ccc;
+    display: flex;
+    padding: 1em;
+
+    .italic {
+      font-style: italic;
+    }
+  }
+}

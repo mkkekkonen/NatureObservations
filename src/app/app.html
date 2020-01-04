@@ -7,6 +7,12 @@
 
   <ion-content>
     <ion-list>
+      <div ion-item>
+        <select (change)="setLanguage($event.target.value)">
+          <option value="fi">Suomi</option>
+          <option value="en">English</option>
+        </select>
+      </div>
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
       </button>
