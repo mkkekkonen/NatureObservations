@@ -28,6 +28,12 @@ import { ObservationDatabaseProvider } from '../../providers/database/observatio
 
 declare var google;
 
+declare var L;
+
+const INITIAL_ZOOM_LEVEL = 15;
+
+const USE_GEOLOCATION = false;
+
 @IonicPage()
 @Component({
   selector: 'page-observation',
@@ -44,8 +50,8 @@ export class EditObservationPage {
   cameraOptions: CameraOptions = null;
   photoLibraryOptions: CameraOptions = null;
 
-  map = null; // google.maps.Map
-  marker = null; // google.maps.Marker
+  map = null; // L.Map
+  marker = null; // L.Marker
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private camera: Camera, public platform: Platform,
@@ -83,7 +89,8 @@ export class EditObservationPage {
 
   ionViewDidLoad() {
     this.platform.ready().then(() => {
-      this.mapDiv && this.initMap();
+      // this.mapDiv && this.initMap();
+      this.initLeafletMap();
     });
   }
 
@@ -141,52 +148,38 @@ export class EditObservationPage {
     typeModal.present();
   }
 
-  initMap() {
-    try {
-      if (!this.observation.mapLocation
-          || (!this.observation.mapLocation.latitude && !this.observation.mapLocation.longitude)) {
-        // this.geolocation.getCurrentPosition().then((response) => {
-        const latLng = new google.maps.LatLng(61.497, 23.760);
-          // const latLng = new google.maps.LatLng(
-          //   response.coords.latitude,
-          //   response.coords.longitude,
-          // );
-        this.createMap(latLng);
-        // });
-      } else {
-        const latLng = new google.maps.LatLng(
-          this.observation.mapLocation.latitude,
-          this.observation.mapLocation.longitude,
-        );
-        this.createMap(latLng);
-        this.setMarkerAndPan(latLng);
-      }
-    } catch (err) {
-      window.alert(err.message);
+  initLeafletMap() {
+    if (USE_GEOLOCATION) {
+      this.geolocation.getCurrentPosition().then((response) => {
+        const latLng = [response.coords.latitude, response.coords.longitude];
+        this.createLeafletMap(latLng);
+      });
+    } else {
+      const latLng = [61.497, 23.760];
+      this.createLeafletMap(latLng);
     }
   }
 
-  createMap(latLng) {
-    const mapOptions = {
-      center: latLng,
-      zoom: 15,
-      mapTypeId: 'terrain',
-      gestureHandling: 'none',
-      zoomControl: false,
-      disableDefaultUI: true,
-    };
-    this.map = new google.maps.Map(this.mapDiv.nativeElement, mapOptions);
+  createLeafletMap(latLng: number[]) {
+    this.map = L.map(
+      'map',
+      {
+        zoomControl: false,
+        touchZoom: false,
+        doubleClickZoom: false,
+        dragging: false,
+      },
+    ).setView(latLng, INITIAL_ZOOM_LEVEL);
+    L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(this.map);
   }
 
-  setMarkerAndPan(latLng) {
-    if (this.marker !== null) {
-      this.marker.setMap(null);
+  setLeafletMarkerAndPan(latLng: number[]) {
+    if (!this.marker) {
+      this.marker = L.marker(latLng).addTo(this.map);
+    } else {
+      this.marker.setLatLng(latLng);
     }
-    this.marker = new google.maps.Marker({
-      position: latLng,
-      map: this.map,
-    });
-    this.map.panTo(this.marker.getPosition());
+    this.map.panTo(latLng);
   }
 
   openMapModal() {
@@ -194,10 +187,10 @@ export class EditObservationPage {
     mapModal.onDidDismiss((responseObj) => {
       if (responseObj && responseObj.mapLocation) {
         this.observation.mapLocation = responseObj.mapLocation;
-        this.setMarkerAndPan(new google.maps.LatLng(
+        this.setLeafletMarkerAndPan([
           responseObj.mapLocation.latitude,
           responseObj.mapLocation.longitude,
-        ));
+        ]);
       }
     });
     mapModal.present();
@@ -216,7 +209,7 @@ export class EditObservationPage {
             this.observation.mapLocation.observationId = this.observation.id;
           }
 
-          this.mapLocationDb.insertMapLocation(this.observation.mapLocation).then(() => {    
+          this.mapLocationDb.insertMapLocation(this.observation.mapLocation).then(() => {
             this.observationDb.getObservationById(this.observation.id).then((observation) => {
               this.navCtrl.pop();
               this.navCtrl.push(

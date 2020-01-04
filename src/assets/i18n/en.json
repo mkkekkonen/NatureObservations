@@ -1,5 +1,12 @@
 {
+  "APP": {
+    "HOME": "Home",
+    "NEWOBS": "New observation",
+    "CREDITS": "Credits",
+    "DEBUG": "Debug"
+  },
   "HOME": {
+    "NOBS": "Nature Observations",
     "NEWOBS": "New observation",
     "MYOBS": "My observations",
     "IDGUIDE": "Identification guide",

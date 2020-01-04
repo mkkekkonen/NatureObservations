@@ -13,7 +13,6 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
 import { EditObservationPage } from '../pages/edit-observation/edit-observation';
 import { DebugPage } from '../pages/debug/debug';
 import { MapModalPage } from '../pages/map-modal/map-modal';
@@ -49,7 +48,6 @@ export const createTranslateLoader = (http: HttpClient) =>
   declarations: [
     MyApp,
     HomePage,
-    ListPage,
     EditObservationPage,
     DebugPage,
     MapModalPage,
@@ -79,7 +77,6 @@ export const createTranslateLoader = (http: HttpClient) =>
   entryComponents: [
     MyApp,
     HomePage,
-    ListPage,
     EditObservationPage,
     DebugPage,
     MapModalPage,

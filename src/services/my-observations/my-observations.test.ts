@@ -2,8 +2,6 @@ import * as moment from 'moment';
 import Plant from '../../models/plant/Plant';
 import Observation from '../../models/observation/Observation';
 import {
-  NAME,
-  LATINNAME,
   DATE,
   ASC,
   DESC,
